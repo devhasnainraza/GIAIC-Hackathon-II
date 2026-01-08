@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(sp.constitution)",
+      "Bash(ls -d specs/[0-9]*-console-todo)",
+      "Bash(powershell.exe:*)",
+      "Bash(uv init:*)",
+      "Bash(uv add:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(uv run black:*)",
+      "Bash(timeout:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(python:*)",
+      "Bash(powershell:*)"
+    ]
+  }
+}
