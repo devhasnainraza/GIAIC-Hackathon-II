@@ -206,5 +206,133 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 - `history/adr/` — Architecture Decision Records
 - `.specify/` — SpecKit Plus templates and scripts
 
+## Technology Stack
+
+This project uses the following technology stack:
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 16+ (App Router) |
+| Backend | Python FastAPI |
+| ORM | SQLModel |
+| Database | Neon Serverless PostgreSQL |
+| Authentication | Better Auth (JWT-based) |
+| Development | Claude Code + Spec-Kit Plus |
+
+## Agent Usage Guidelines
+
+Use specialized agents for different aspects of the application:
+
+### 1. Authentication Agent (`auth-security-specialist`)
+**Use for:**
+- Implementing user signup/signin with Better Auth
+- JWT token generation and verification
+- Authentication middleware and guards
+- Password hashing and security
+- Session management
+- OAuth integration (if needed)
+- Security audits of authentication code
+
+**When to invoke:**
+- Any task involving user authentication or authorization
+- Implementing protected routes or endpoints
+- Debugging authentication issues
+- Security reviews of auth-related code
+
+### 2. Frontend Agent (`nextjs-ui-builder`)
+**Use for:**
+- Building Next.js pages and components
+- Implementing App Router features (layouts, loading states, error boundaries)
+- Creating responsive UI with Tailwind CSS
+- Form handling and client-side validation
+- Integrating with backend API endpoints
+- State management (React Context, Zustand, etc.)
+- Client-side JWT token handling
+
+**When to invoke:**
+- Creating or modifying UI components
+- Implementing new pages or routes
+- Building forms and user interactions
+- Making the application responsive
+- Frontend-backend integration
+
+### 3. Database Agent (`neon-db-architect`)
+**Use for:**
+- Designing database schemas and table structures
+- Creating SQLModel models
+- Writing SQL queries and optimizations
+- Database migrations
+- Implementing relationships (foreign keys, indexes)
+- Query performance optimization
+- Database security best practices
+
+**When to invoke:**
+- Creating or modifying database tables
+- Designing data models
+- Writing complex queries
+- Database performance issues
+- Schema migrations
+- Data integrity concerns
+
+### 4. Backend Agent (`fastapi-backend-dev`)
+**Use for:**
+- Creating FastAPI endpoints and routes
+- Request/response validation with Pydantic
+- Implementing business logic
+- Database operations via SQLModel
+- JWT token verification middleware
+- Error handling and exception management
+- API documentation
+- CORS configuration
+
+**When to invoke:**
+- Creating or modifying API endpoints
+- Implementing backend business logic
+- Database integration in API routes
+- API performance optimization
+- Backend error handling
+- Middleware implementation
+
+## Authentication Architecture
+
+This project uses **Better Auth** with **JWT tokens** for authentication:
+
+### Authentication Flow
+
+1. **User Registration/Login (Frontend)**
+   - User submits credentials via Next.js form
+   - Better Auth validates and creates session
+   - Better Auth issues JWT token
+   - Frontend stores token (httpOnly cookie or localStorage)
+
+2. **API Request (Frontend → Backend)**
+   - Frontend includes JWT in request header: `Authorization: Bearer <token>`
+   - All authenticated API calls must include this header
+
+3. **Token Verification (Backend)**
+   - FastAPI middleware extracts token from `Authorization` header
+   - Backend verifies JWT signature using shared secret
+   - Backend decodes token to extract user information (user_id, email, etc.)
+
+4. **User-Specific Data Access (Backend)**
+   - Backend matches decoded user_id with request parameters
+   - Backend filters database queries to return only user's data
+   - Example: `GET /api/users/{user_id}/tasks` returns only tasks for that user
+
+### Security Requirements
+
+- **Never hardcode secrets**: Store JWT secret in `.env` file
+- **Validate user ownership**: Always verify that the authenticated user matches the resource owner
+- **Use HTTPS**: JWT tokens must be transmitted over secure connections
+- **Token expiration**: Implement reasonable token expiry times
+- **Refresh tokens**: Consider implementing refresh token mechanism for better UX
+
+### Implementation Guidelines
+
+- **Frontend**: Use Better Auth SDK for authentication UI and token management
+- **Backend**: Implement JWT verification middleware that runs before protected routes
+- **Database**: Store user_id as foreign key in all user-owned resources
+- **API Design**: Include user_id in URL paths for user-specific resources
+
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
