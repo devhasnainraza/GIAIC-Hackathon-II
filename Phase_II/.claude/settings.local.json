@@ -61,7 +61,10 @@
       "Bash(cd frontend/app/'\\(dashboard\\)'/dashboard)",
       "Bash(bash demo_password_reset.sh)",
       "Bash(git pull origin 004-ui-ux-branding)",
-      "Bash(git add -A)"
+      "Bash(git add -A)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git add frontend/components/auth/ForgotPasswordForm.tsx frontend/components/auth/ResetPasswordForm.tsx)"
     ]
   }
 }
