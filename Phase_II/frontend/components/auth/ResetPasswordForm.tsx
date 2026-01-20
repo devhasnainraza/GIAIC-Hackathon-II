@@ -145,7 +145,6 @@ export function ResetPasswordForm() {
           required
           autoComplete="new-password"
           disabled={isSubmitting}
-          icon={<Lock className="w-5 h-5 text-slate-400" />}
         />
 
         {/* Confirm Password Input */}
@@ -161,7 +160,6 @@ export function ResetPasswordForm() {
           required
           autoComplete="new-password"
           disabled={isSubmitting}
-          icon={<Lock className="w-5 h-5 text-slate-400" />}
         />
 
         {/* Password Requirements */}
