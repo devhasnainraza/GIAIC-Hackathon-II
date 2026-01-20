@@ -43,7 +43,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [isSearching, setIsSearching] = useState(false);
   const [filter, setFilter] = useState<FilterType>('all');
   const inputRef = useRef<HTMLInputElement>(null);
-  const debounceTimerRef = useRef<NodeJS.Timeout>();
+  const debounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // Debounce search query
   useEffect(() => {
