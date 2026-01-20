@@ -5,10 +5,12 @@ from typing import List
 from src.database import get_session
 from src.schemas.task import TaskCreateRequest, TaskUpdateRequest, TaskResponse
 from src.services.task_service import TaskService
+from src.services.notification_service import NotificationService
+from src.models.notification import NotificationType
 from src.api.deps import get_current_user
 from src.models.user import User
 
-router = APIRouter(prefix="/api/tasks", tags=["tasks"])
+router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
 @router.get("", response_model=List[TaskResponse])
@@ -44,7 +46,7 @@ async def create_task(
     Create a new task for the authenticated user.
 
     Args:
-        task_data: Task creation data (title, description)
+        task_data: Task creation data (title, description, status, priority, etc.)
         current_user: Authenticated user (from JWT token)
         session: Database session
 
@@ -56,13 +58,29 @@ async def create_task(
 
     Note:
         User ID is automatically assigned from the authenticated user
+        Creates a notification for the user when task is created
     """
     service = TaskService(session)
     task = service.create_task(
         user_id=current_user.id,
         title=task_data.title,
-        description=task_data.description
+        description=task_data.description,
+        status=task_data.status or "todo",
+        priority=task_data.priority or "medium",
+        due_date=task_data.due_date,
+        project_id=task_data.project_id,
+        tag_ids=task_data.tag_ids
     )
+
+    # Create notification for task creation
+    notification_service = NotificationService(session)
+    notification_service.create_notification(
+        user_id=current_user.id,
+        notification_type=NotificationType.TASK_CREATED,
+        title="Task Created",
+        description=f'New task "{task.title}" was created'
+    )
+
     return TaskResponse.model_validate(task)
 
 
@@ -113,7 +131,7 @@ async def update_task(
 
     Args:
         task_id: ID of the task to update
-        task_data: Task update data (title, description, is_complete)
+        task_data: Task update data (title, description, status, priority, etc.)
         current_user: Authenticated user (from JWT token)
         session: Database session
 
@@ -126,15 +144,59 @@ async def update_task(
 
     Note:
         User isolation is enforced - only updates task if owned by authenticated user
+        Creates a notification when task is completed or updated
     """
     service = TaskService(session)
+
+    # Get the task before update to check if completion status changed
+    old_task = service.get_task(task_id, current_user.id)
+    if not old_task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task not found"
+        )
+
+    # Update the task
     task = service.update_task(
         task_id=task_id,
         user_id=current_user.id,
         title=task_data.title,
         description=task_data.description,
-        is_complete=task_data.is_complete
+        status=task_data.status,
+        priority=task_data.priority,
+        due_date=task_data.due_date,
+        project_id=task_data.project_id,
+        is_complete=task_data.is_complete,
+        tag_ids=task_data.tag_ids
     )
+
+    # Create notification based on what changed
+    notification_service = NotificationService(session)
+
+    # Check if task was just completed
+    if task_data.is_complete is not None and task_data.is_complete and not old_task.is_complete:
+        notification_service.create_notification(
+            user_id=current_user.id,
+            notification_type=NotificationType.TASK_COMPLETED,
+            title="Task Completed",
+            description=f'You completed "{task.title}"'
+        )
+    elif task_data.status == "done" and old_task.status != "done":
+        notification_service.create_notification(
+            user_id=current_user.id,
+            notification_type=NotificationType.TASK_COMPLETED,
+            title="Task Completed",
+            description=f'You completed "{task.title}"'
+        )
+    else:
+        # General update notification
+        notification_service.create_notification(
+            user_id=current_user.id,
+            notification_type=NotificationType.TASK_UPDATED,
+            title="Task Updated",
+            description=f'Task "{task.title}" was updated'
+        )
+
     return TaskResponse.model_validate(task)
 
 
@@ -160,7 +222,30 @@ async def delete_task(
 
     Note:
         User isolation is enforced - only deletes task if owned by authenticated user
+        Creates a notification when task is deleted
     """
     service = TaskService(session)
+
+    # Get task title before deletion for notification
+    task = service.get_task(task_id, current_user.id)
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task not found"
+        )
+
+    task_title = task.title
+
+    # Delete the task
     service.delete_task(task_id, current_user.id)
+
+    # Create notification for task deletion
+    notification_service = NotificationService(session)
+    notification_service.create_notification(
+        user_id=current_user.id,
+        notification_type=NotificationType.TASK_DELETED,
+        title="Task Deleted",
+        description=f'Task "{task_title}" was deleted'
+    )
+
     return None

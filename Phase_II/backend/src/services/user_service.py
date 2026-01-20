@@ -3,6 +3,7 @@ from sqlmodel import Session, select
 from src.models.user import User
 from src.services.auth import hash_password, verify_password, create_access_token
 from typing import Optional
+from datetime import datetime
 from fastapi import HTTPException, status
 
 class UserService:
@@ -104,3 +105,65 @@ class UserService:
         }
 
         return create_access_token(token_data)
+
+    def set_password_reset_token(self, user: User, token: str, expires_at: datetime) -> User:
+        """
+        Set password reset token for user.
+
+        Args:
+            user: User object to update
+            token: Reset token string
+            expires_at: Token expiration datetime
+
+        Returns:
+            Updated User object
+        """
+        user.reset_token = token
+        user.reset_token_expires = expires_at
+        self.session.add(user)
+        self.session.commit()
+        self.session.refresh(user)
+        return user
+
+    def get_user_by_reset_token(self, token: str) -> Optional[User]:
+        """
+        Get user by valid reset token.
+
+        Args:
+            token: Password reset token
+
+        Returns:
+            User object if token is valid and not expired, None otherwise
+        """
+        statement = select(User).where(User.reset_token == token)
+        user = self.session.exec(statement).first()
+
+        if not user:
+            return None
+
+        # Check if token has expired
+        if user.reset_token_expires and user.reset_token_expires < datetime.utcnow():
+            return None
+
+        return user
+
+    def update_user_password(self, user: User, new_password: str) -> User:
+        """
+        Update user password and clear reset token.
+
+        Args:
+            user: User object to update
+            new_password: New plain text password (will be hashed)
+
+        Returns:
+            Updated User object
+        """
+        user.hashed_password = hash_password(new_password)
+        user.reset_token = None
+        user.reset_token_expires = None
+        user.updated_at = datetime.utcnow()
+
+        self.session.add(user)
+        self.session.commit()
+        self.session.refresh(user)
+        return user

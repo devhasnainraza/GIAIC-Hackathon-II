@@ -153,9 +153,12 @@ export const apiClient = {
         body: JSON.stringify({ email, password }),
       });
 
-      // Store JWT token in localStorage
+      // Store JWT token and user data in localStorage
       if (typeof window !== 'undefined' && response.token) {
         localStorage.setItem('auth_token', response.token);
+        if (response.user) {
+          localStorage.setItem('user', JSON.stringify(response.user));
+        }
       }
 
       return response;
@@ -173,9 +176,12 @@ export const apiClient = {
         body: JSON.stringify({ email, password }),
       });
 
-      // Store JWT token in localStorage
+      // Store JWT token and user data in localStorage
       if (typeof window !== 'undefined' && response.token) {
         localStorage.setItem('auth_token', response.token);
+        if (response.user) {
+          localStorage.setItem('user', JSON.stringify(response.user));
+        }
       }
 
       return response;
@@ -186,9 +192,10 @@ export const apiClient = {
      * Clears the JWT token from localStorage
      */
     async logout(): Promise<void> {
-      // Remove JWT token from localStorage
+      // Remove JWT token and user data from localStorage
       if (typeof window !== 'undefined') {
         localStorage.removeItem('auth_token');
+        localStorage.removeItem('user');
       }
 
       // Optionally call backend logout endpoint

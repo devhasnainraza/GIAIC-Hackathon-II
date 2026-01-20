@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Button } from '@/components/ui/Button';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
-import { apiClient, ApiError } from '@/lib/api-client';
+import { apiClient, ApiError } from '@/lib/api-client-optimized';
 import {
   validateTaskTitle,
   validateTaskDescription,

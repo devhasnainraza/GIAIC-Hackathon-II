@@ -8,21 +8,14 @@ export const metadata: Metadata = {
 /**
  * Auth Layout
  *
- * Layout for authentication pages (signin, signup)
- * - Centered form container
- * - No header or navigation
- * - Clean, minimal design
+ * Simple pass-through layout for authentication pages.
+ * The actual layout styling is handled by the AuthLayout component
+ * to enable full-screen split design.
  */
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="w-full max-w-md">
-        {children}
-      </div>
-    </div>
-  );
+  return <>{children}</>;
 }

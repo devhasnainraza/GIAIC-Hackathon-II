@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
-import { apiClient, ApiError } from '@/lib/api-client';
+import { apiClient, ApiError } from '@/lib/api-client-optimized';
 import {
   validateEmail,
   validatePassword,
@@ -84,29 +84,24 @@ export function SigninForm() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-2xl p-8 sm:p-10 border border-gray-100">
-      {/* Header with Icon */}
-      <div className="mb-8 text-center">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
-          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-          </svg>
-        </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-        <p className="text-gray-600">
-          Sign in to continue to TaskFlow
+    <div>
+      {/* Header */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-slate-900 mb-1">Sign in to your account</h2>
+        <p className="text-sm text-slate-600">
+          Enter your credentials to access your tasks
         </p>
       </div>
 
       {/* API Error */}
       {apiError && (
-        <div className="mb-6">
+        <div className="mb-4">
           <ErrorMessage message={apiError} onDismiss={() => setApiError(null)} />
         </div>
       )}
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {/* Email Input */}
         <Input
           id="signin-email"
@@ -137,40 +132,27 @@ export function SigninForm() {
           disabled={isSubmitting}
         />
 
+        {/* Forgot Password Link */}
+        <div className="flex items-center justify-end">
+          <Link
+            href="/forgot-password"
+            className="text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors"
+          >
+            Forgot password?
+          </Link>
+        </div>
+
         {/* Submit Button */}
         <Button
           type="submit"
           variant="primary"
           loading={isSubmitting}
           disabled={isSubmitting}
-          className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white font-semibold py-3.5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+          className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
         >
           {isSubmitting ? 'Signing in...' : 'Sign In'}
         </Button>
       </form>
-
-      {/* Divider */}
-      <div className="relative my-8">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200"></div>
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-white text-gray-500">New to TaskFlow?</span>
-        </div>
-      </div>
-
-      {/* Sign Up Link */}
-      <div className="text-center">
-        <Link
-          href="/signup"
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
-        >
-          <span>Create an account</span>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </Link>
-      </div>
     </div>
   );
 }

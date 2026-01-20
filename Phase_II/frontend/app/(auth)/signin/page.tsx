@@ -1,20 +1,25 @@
 import { SigninForm } from '@/components/auth/SigninForm';
+import { AuthLayout } from '@/components/auth/AuthLayout';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sign In',
-  description: 'Sign in to access your tasks',
+  title: 'Sign In - Pure Tasks',
+  description: 'Sign in to access your tasks and boost your productivity',
 };
 
 /**
- * Signin Page
+ * Signin Page with Full-Screen Split Layout
  *
- * Public page for user authentication
- * - Renders SigninForm component
- * - Uses auth layout (centered form)
- * - Redirects to /tasks on successful signin (handled by SigninForm)
- * - Supports redirect parameter for post-auth navigation
+ * Features:
+ * - Left side: Sign in form
+ * - Right side: Branding and features (Lark Base / Slack style)
+ * - Responsive design (mobile shows only form)
+ * - Redirects to /tasks on successful signin
  */
 export default function SigninPage() {
-  return <SigninForm />;
+  return (
+    <AuthLayout type="signin">
+      <SigninForm />
+    </AuthLayout>
+  );
 }

@@ -1,216 +1,418 @@
-# TaskFlow - Modern Task Management Application
+# Pure Tasks - Premium Task Management Application
 
-Welcome to TaskFlow, a cutting-edge task management application built with Next.js, FastAPI, and PostgreSQL.
+A modern, full-stack task management application built with Next.js and FastAPI, featuring a premium UI/UX inspired by industry-leading productivity tools like Lark and Slack.
 
-## 🚀 Features
+## 🌟 Overview
 
-- **Premium UI/UX**: Beautiful light/dark theme with no gradients, featuring a maximum of 3 brand colors (navy, gold, teal) for a sober, premium visual experience
-- **Long-form Homepage**: Multi-section, visually rich homepage with smooth animations and professional design
-- **Complete Profile System**: User profile management with avatar upload and information editing
-- **Real-time Updates**: Live task synchronization
-- **Secure Authentication**: JWT-based authentication system
-- **RESTful API**: Well-documented API endpoints
-- **Database Integration**: PostgreSQL with SQLModel ORM
-- **Type Safety**: Full TypeScript support
-- **Responsive Design**: Perfectly optimized for mobile, tablet, and desktop
-- **Accessibility**: WCAG 2.1 AA compliant interface
+Pure Tasks is a production-ready task management platform that combines powerful features with an intuitive, beautiful interface. Built with enterprise-grade architecture and security practices, it offers everything from basic todo lists to advanced project management capabilities.
 
-## 🛠️ Tech Stack
+## ✨ Key Features
 
-- **Frontend**: Next.js 16.1.1, React, TypeScript, Tailwind CSS, Framer Motion
-- **Backend**: FastAPI, Python 3.11+
-- **Database**: PostgreSQL with SQLModel
-- **Authentication**: JWT tokens
-- **ORM**: SQLModel for database operations
-- **Styling**: Tailwind CSS for utility-first CSS
-- **Animations**: Framer Motion for smooth, high-end animations
+### Task Management
+- **Multiple View Modes**: Switch between List, Board (Kanban), and Timeline (Gantt) views
+- **Advanced Filtering**: Filter by status, priority, date range, projects, and tags
+- **Smart Search**: Full-text search across tasks, projects, and tags
+- **Bulk Operations**: Complete or delete multiple tasks at once
+- **Priority Levels**: Organize tasks with low, medium, high, and urgent priorities
+- **Status Tracking**: Track progress through todo, in-progress, review, and done states
+- **Due Dates**: Set deadlines and track overdue tasks
 
-## Project Structure
+### Organization
+- **Projects**: Group related tasks into color-coded projects
+- **Tags**: Categorize tasks with customizable colored tags
+- **Smart Sorting**: Sort by creation date, due date, priority, or title
 
-```
-Phase_II/
-├── backend/                 # FastAPI backend
-│   ├── src/
-│   │   ├── api/            # API endpoints
-│   │   │   ├── auth.py     # Authentication endpoints
-│   │   │   └── tasks.py    # Task management endpoints
-│   │   ├── models/         # SQLModel database models
-│   │   │   ├── user.py     # User model
-│   │   │   └── task.py     # Task model
-│   │   ├── schemas/        # Pydantic schemas
-│   │   │   ├── user.py     # User request/response schemas
-│   │   │   └── task.py     # Task request/response schemas
-│   │   ├── services/       # Business logic layer
-│   │   │   ├── auth.py     # JWT utilities
-│   │   │   ├── user_service.py  # User operations
-│   │   │   └── task_service.py  # Task operations
-│   │   ├── database.py     # Database configuration
-│   │   ├── config.py       # Application settings
-│   │   ├── deps.py         # FastAPI dependencies
-│   │   └── main.py         # Application entry point
-│   ├── alembic/            # Database migrations
-│   └── requirements.txt    # Python dependencies
-│
-├── frontend/               # Next.js frontend
-│   ├── app/               # Next.js App Router pages
-│   │   ├── (dashboard)/   # Protected dashboard pages
-│   │   │   ├── layout.tsx # Dashboard layout with premium header/footer
-│   │   │   └── tasks/     # Task management pages
-│   │   ├── layout.tsx     # Root layout
-│   │   ├── page.tsx       # Premium homepage with multi-section design
-│   │   └── globals.css    # Global styles and theme
-│   ├── components/        # React components
-│   │   ├── layout/        # Layout components
-│   │   │   ├── Header.tsx # Premium header with navigation
-│   │   │   └── Footer.tsx # Comprehensive footer
-│   │   ├── tasks/         # Task management components
-│   │   │   ├── TaskItem.tsx    # Enhanced task item with animations
-│   │   │   ├── TaskList.tsx    # Task list with statistics
-│   │   │   ├── TaskForm.tsx    # Premium task form
-│   │   │   └── CreateTaskButton.tsx # Elegant create button
-│   │   └── auth/          # Authentication components
-│   │       └── LogoutButton.tsx # Enhanced logout button
-│   ├── lib/               # Utilities and API client
-│   │   ├── api-client.ts  # API client with error handling
-│   │   └── types.ts       # TypeScript type definitions
-│   ├── styles/            # Style sheets
-│   │   └── globals.css    # Global styles and theme
-│   └── package.json       # Node dependencies
-│
-└── specs/                 # Project specifications and documentation
-    └── 4-ui-ux-branding/  # UI/UX, Branding & Visual Experience specs
-        ├── spec.md        # Feature specification
-        ├── plan.md        # Implementation plan
-        ├── tasks.md       # Task breakdown
-        └── checklists/    # Quality assurance checklists
-```
+### User Experience
+- **Premium UI**: Lark/Slack-inspired design with smooth animations and transitions
+- **Responsive Design**: Fully optimized for mobile, tablet, and desktop
+- **Dark/Light Theme**: Automatic theme switching with user preferences
+- **Keyboard Shortcuts**:
+  - `N` - Create new task
+  - `F` - Open filters
+  - `Escape` - Close modals
+  - `1/2/3` - Switch between List/Board/Timeline views
+- **Real-time Notifications**: Stay updated with in-app notification system
 
-## Getting Started
+### Analytics & Insights
+- **User Dashboard**: Comprehensive overview with statistics and insights
+- **Completion Tracking**: Monitor your productivity with completion rates and streaks
+- **Activity Timeline**: View your recent actions and task history
+- **Weekly Activity Charts**: Visualize your productivity patterns
+- **Performance Metrics**: Track total tasks, completion rate, and productivity score
 
-For detailed setup instructions, see [quickstart.md](./specs/001-todo-web-app/quickstart.md)
+### User Profile
+- **Profile Customization**: Add bio, location, website, and social links (GitHub, Twitter, LinkedIn)
+- **Avatar Upload**: Cloud-based avatar storage with automatic optimization
+- **User Settings**: Customize notifications, theme, language, and timezone preferences
+- **Activity History**: Track all your actions and changes
 
-### Quick Setup
+### Security & Authentication
+- **JWT Authentication**: Secure token-based authentication with 7-day expiration
+- **Password Reset**: Email-based password recovery with secure tokens
+- **Bcrypt Hashing**: Industry-standard password encryption
+- **Rate Limiting**: Protection against brute force attacks
+- **User Isolation**: Complete data separation between users
+- **Security Headers**: CORS, CSP, and other security best practices
 
-1. **Clone the repository**
-   ```bash
-   cd E:\Hackathon_II\Phase_II
-   ```
+## 🛠️ Technology Stack
 
-2. **Set up environment variables**
-   - Copy `.env.example` files in both `backend/` and `frontend/` directories
-   - Rename to `.env` and fill in your values
+### Frontend
+- **Framework**: Next.js 16.1 (App Router)
+- **UI Library**: React 19.2.3
+- **Styling**: Tailwind CSS 4
+- **Icons**: Lucide React
+- **Authentication**: Better Auth 1.4.10
+- **Date Handling**: date-fns 4.1.0
+- **Language**: TypeScript
 
-3. **Backend setup**
+### Backend
+- **Framework**: FastAPI 0.109.0 (Python)
+- **ORM**: SQLModel
+- **Database**: PostgreSQL (Neon Serverless)
+- **Authentication**: JWT (HS256)
+- **Password Hashing**: Bcrypt
+- **Email**: Multi-provider (Resend, Gmail SMTP, Console)
+- **File Storage**: Cloudinary
+- **Validation**: Pydantic
+
+### Infrastructure
+- **Database**: Neon Serverless PostgreSQL
+- **File Storage**: Cloudinary CDN
+- **Email Service**: Resend / Gmail SMTP
+- **Deployment Ready**: Docker, Kubernetes health checks
+
+## 📋 Database Schema
+
+The application uses a relational database with the following core tables:
+
+- **users**: User accounts with profile information and settings
+- **tasks**: Todo items with rich metadata (status, priority, due dates)
+- **projects**: Task organization containers with colors
+- **tags**: Categorization labels with many-to-many relationships
+- **notifications**: User notification system
+- **user_settings**: User preferences and configuration
+- **user_activities**: Activity tracking and audit log
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js**: 18.x or higher
+- **Python**: 3.11 or higher
+- **PostgreSQL**: Database instance (Neon recommended)
+- **Cloudinary Account**: For avatar uploads (optional)
+- **Email Provider**: Resend or Gmail (for password reset)
+
+### Backend Setup
+
+1. **Navigate to backend directory**
    ```bash
    cd backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   alembic upgrade head
-   uvicorn src.main:app --reload
    ```
 
-4. **Frontend setup**
+2. **Create virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv/Scripts/activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure environment variables**
+
+   Copy `.env.example` to `.env` and configure:
+   ```env
+   DATABASE_URL=postgresql://user:password@host:5432/database
+   JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+   JWT_ALGORITHM=HS256
+   JWT_EXPIRATION_HOURS=168
+   CORS_ORIGINS=http://localhost:3000
+   ENVIRONMENT=development
+
+   # Cloudinary (optional)
+   CLOUDINARY_CLOUD_NAME=your-cloud-name
+   CLOUDINARY_API_KEY=your-api-key
+   CLOUDINARY_API_SECRET=your-api-secret
+
+   # Email Provider (choose one)
+   EMAIL_PROVIDER=console  # Options: resend, gmail, console
+   RESEND_API_KEY=your-resend-key
+   # OR
+   GMAIL_EMAIL=your-email@gmail.com
+   GMAIL_APP_PASSWORD=your-app-password
+
+   FRONTEND_URL=http://localhost:3000
+   FROM_EMAIL=noreply@puretasks.com
+   ```
+
+5. **Run database migrations**
+   ```bash
+   # Migrations are auto-applied on startup
+   # Or manually run migration scripts in src/migrations/
+   ```
+
+6. **Start the backend server**
+   ```bash
+   uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+   The API will be available at `http://localhost:8000`
+   - API Documentation: `http://localhost:8000/docs`
+   - Alternative Docs: `http://localhost:8000/redoc`
+
+### Frontend Setup
+
+1. **Navigate to frontend directory**
    ```bash
    cd frontend
+   ```
+
+2. **Install dependencies**
+   ```bash
    npm install
+   ```
+
+3. **Configure environment variables**
+
+   Create `.env.local`:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   ```
+
+4. **Start the development server**
+   ```bash
    npm run dev
    ```
 
-5. **Access the application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-   - API Documentation: http://localhost:8000/docs
+   The application will be available at `http://localhost:3000`
 
-## User Stories
+### Production Deployment
 
-### Priority 1: User Registration and Authentication
-- Users can register with email and password
-- Users can login with credentials
-- Users can logout
-- JWT tokens for secure authentication
+For production deployment, refer to:
+- `PRODUCTION_SETUP.md` - Complete production setup guide
+- `PRODUCTION_QUICK_REFERENCE.md` - Quick reference for production configuration
 
-### Priority 2: Create and View Tasks
-- Users can create tasks with title and description
-- Users can view their task list
-- Tasks are sorted by creation date (newest first)
+## 📚 API Documentation
 
-### Priority 3: Mark Tasks Complete/Incomplete
-- Users can toggle task completion status
-- Visual indication of completed tasks (strikethrough)
-- Status persists across sessions
+### Authentication Endpoints
 
-### Priority 4: Edit Task Details
-- Users can edit task title and description
-- Changes are saved immediately
-- Modal interface for editing
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login (returns JWT token)
+- `POST /api/auth/logout` - User logout
+- `POST /api/auth/forgot-password` - Request password reset
+- `POST /api/auth/reset-password` - Reset password with token
 
-### Priority 5: Delete Tasks
-- Users can delete tasks
-- Confirmation dialog before deletion
-- Permanent removal from database
+### Task Endpoints
 
-## Security Features
-
-- **Password Hashing**: Bcrypt with cost factor 12
-- **JWT Authentication**: HS256 algorithm with 7-day expiration
-- **User Isolation**: All database queries filtered by user_id
-- **CORS Protection**: Configured for specific origins
-- **Input Validation**: Pydantic schemas on backend, client-side validation on frontend
-- **Route Protection**: Middleware prevents unauthorized access
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/logout` - Logout user
-
-### Tasks (Protected)
-- `GET /api/tasks` - List user's tasks
+- `GET /api/tasks` - List all user's tasks
 - `POST /api/tasks` - Create new task
 - `GET /api/tasks/{id}` - Get specific task
 - `PATCH /api/tasks/{id}` - Update task
 - `DELETE /api/tasks/{id}` - Delete task
 
-## Development
+### Project Endpoints
 
-### Running Tests
+- `GET /api/projects` - List all projects
+- `POST /api/projects` - Create new project
+- `GET /api/projects/{id}` - Get specific project
+- `PATCH /api/projects/{id}` - Update project
+- `DELETE /api/projects/{id}` - Delete project
+
+### Tag Endpoints
+
+- `GET /api/tags` - List all tags
+- `POST /api/tags` - Create new tag
+- `GET /api/tags/{id}` - Get specific tag
+- `PATCH /api/tags/{id}` - Update tag
+- `DELETE /api/tags/{id}` - Delete tag
+
+### User Endpoints
+
+- `GET /api/users/me` - Get current user profile
+- `PATCH /api/users/me` - Update user profile
+- `POST /api/users/me/avatar` - Upload avatar
+- `DELETE /api/users/me/avatar` - Delete avatar
+- `PATCH /api/users/me/settings` - Update user settings
+- `POST /api/users/me/password` - Change password
+- `GET /api/users/me/stats` - Get user statistics
+- `GET /api/users/me/activity` - Get recent activity
+- `DELETE /api/users/me` - Delete account
+
+### Notification Endpoints
+
+- `GET /api/notifications` - List all notifications
+- `GET /api/notifications/unread` - Get unread count
+- `PATCH /api/notifications/{id}/read` - Mark as read
+- `POST /api/notifications/mark-all-read` - Mark all as read
+- `DELETE /api/notifications` - Clear all notifications
+
+### Health & Monitoring
+
+- `GET /health` - Comprehensive health check
+- `GET /health/ready` - Readiness probe (Kubernetes)
+- `GET /health/live` - Liveness probe (Kubernetes)
+- `GET /metrics` - Application metrics
+
+For detailed API documentation, visit `http://localhost:8000/docs` when running the backend.
+
+## 🎨 UI Components
+
+The application features a comprehensive component library:
+
+### Authentication Components
+- Sign in/Sign up forms with validation
+- Password reset flow
+- Auth guards and layouts
+
+### Task Components
+- Task list with multiple view modes
+- Task detail panel with inline editing
+- Create/edit task modal
+- Bulk action toolbar
+
+### Layout Components
+- Responsive sidebar navigation
+- Top header with search and notifications
+- Mobile bottom navigation
+- User menu with profile dropdown
+
+### UI Elements
+- Avatar upload with preview
+- Notification dropdown with real-time updates
+- Theme toggle (dark/light)
+- Search modal with keyboard navigation
+- Filter panel with advanced options
+
+## 🔐 Security Features
+
+- **JWT Authentication**: Secure token-based authentication
+- **Password Hashing**: Bcrypt with cost factor 12
+- **Rate Limiting**: Protection on sensitive endpoints (3/hour for password reset requests)
+- **CORS Configuration**: Controlled cross-origin access
+- **Security Headers**: X-Frame-Options, CSP, X-Content-Type-Options
+- **User Isolation**: All queries filtered by authenticated user
+- **Token Expiration**: 7-day JWT expiration with secure refresh flow
+- **SQL Injection Protection**: Parameterized queries via SQLModel ORM
+- **XSS Protection**: Input sanitization and output encoding
+
+## 📊 Performance Features
+
+- **Connection Pooling**: Optimized database connections (5 pool, 10 overflow)
+- **Request Logging**: Performance monitoring with slow request detection (>1s)
+- **Lazy Loading**: Code splitting and dynamic imports
+- **Image Optimization**: Cloudinary CDN with automatic resizing
+- **Caching**: Strategic caching for static assets
+- **Rate Limiting**: 60 requests/minute in production
+
+## 🧪 Testing
+
+### Backend Tests
 ```bash
-# Backend tests
 cd backend
 pytest
+```
 
-# Frontend tests
+### Frontend Tests
+```bash
 cd frontend
 npm test
 ```
 
-### Database Migrations
-```bash
-cd backend
-alembic revision --autogenerate -m "Description"
-alembic upgrade head
+Test files are located in:
+- Backend: `backend/tests/`
+- Frontend: `frontend/__tests__/`
+
+## 📁 Project Structure
+
+```
+Phase_II/
+├── backend/
+│   ├── src/
+│   │   ├── api/          # API route handlers
+│   │   ├── models/       # Database models
+│   │   ├── schemas/      # Pydantic schemas
+│   │   ├── services/     # Business logic
+│   │   ├── migrations/   # Database migrations
+│   │   ├── config.py     # Configuration
+│   │   ├── database.py   # Database setup
+│   │   └── main.py       # FastAPI application
+│   ├── tests/            # Backend tests
+│   └── requirements.txt  # Python dependencies
+│
+├── frontend/
+│   ├── app/              # Next.js App Router pages
+│   │   ├── (auth)/       # Authentication pages
+│   │   ├── (dashboard)/  # Dashboard pages
+│   │   └── page.tsx      # Landing page
+│   ├── components/       # React components
+│   │   ├── auth/         # Auth components
+│   │   ├── tasks/        # Task components
+│   │   ├── lark/         # Premium UI components
+│   │   ├── landing/      # Landing page components
+│   │   └── ui/           # Shared UI components
+│   ├── lib/              # Utilities and helpers
+│   ├── hooks/            # Custom React hooks
+│   └── package.json      # Node dependencies
+│
+└── specs/                # Feature specifications
 ```
 
-### Code Quality
-- Backend: Follow PEP 8 style guide
-- Frontend: ESLint and Prettier configured
-- Type checking: mypy (backend), TypeScript (frontend)
+## 🤝 Contributing
 
-## Contributing
+Contributions are welcome! Please follow these guidelines:
 
-This project follows the Spec-Driven Development (SDD) workflow:
-1. Specification (`spec.md`)
-2. Planning (`plan.md`)
-3. Task breakdown (`tasks.md`)
-4. Implementation
-5. Testing and validation
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+### Development Guidelines
 
-MIT License - See LICENSE file for details
+- Follow the existing code style and conventions
+- Write meaningful commit messages
+- Add tests for new features
+- Update documentation as needed
+- Ensure all tests pass before submitting PR
 
-## Support
+## 📝 License
 
-For issues and questions, please refer to the project documentation in the `specs/` directory.
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Design inspiration from Lark, Slack, and Linear
+- Built with modern web technologies and best practices
+- Special thanks to the open-source community
+
+## 📧 Contact & Support
+
+For questions, issues, or feature requests:
+- Open an issue on GitHub
+- Check existing documentation in the `docs/` folder
+- Review the API documentation at `/docs` endpoint
+
+## 🗺️ Roadmap
+
+### Upcoming Features
+- [ ] Real-time collaboration with WebSockets
+- [ ] Mobile applications (iOS/Android)
+- [ ] Calendar integration (Google Calendar, Outlook)
+- [ ] Team workspaces and sharing
+- [ ] Advanced analytics and reporting
+- [ ] Task templates and automation
+- [ ] File attachments for tasks
+- [ ] Comments and discussions
+- [ ] Time tracking
+- [ ] Integrations (Slack, Discord, etc.)
+
+## 📸 Screenshots
+
+> Add screenshots of your application here to showcase the UI
+
+---
+
+**Built with ❤️ using Next.js and FastAPI**

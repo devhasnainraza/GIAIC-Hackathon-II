@@ -28,9 +28,24 @@ export interface Task {
   user_id: number;
   title: string; // 1-200 characters
   description: string | null; // max 2000 characters
+  status: string; // todo, in_progress, review, done
+  priority: string; // low, medium, high, urgent
+  due_date: string | null; // ISO 8601 format
+  project_id: number | null;
   is_complete: boolean;
   created_at: string; // ISO 8601 format
   updated_at: string; // ISO 8601 format
+  completed_at: string | null; // ISO 8601 format
+  project?: {
+    id: number;
+    name: string;
+    color: string;
+  };
+  tags?: Array<{
+    id: number;
+    name: string;
+    color: string;
+  }>;
 }
 
 // ============================================================================

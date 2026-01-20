@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiClient, ApiError } from '@/lib/api-client';
+import { apiClient, ApiError } from '@/lib/api-client-optimized';
 
 /**
  * Enhanced LogoutButton with Premium Sober Design

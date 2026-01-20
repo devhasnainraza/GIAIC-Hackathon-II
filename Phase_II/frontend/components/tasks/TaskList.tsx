@@ -1,17 +1,18 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { TaskItem } from './TaskItem';
 import { TaskForm } from './TaskForm';
 import { Modal } from '@/components/ui/Modal';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
-import { apiClient, ApiError } from '@/lib/api-client';
+import { apiClient, ApiError } from '@/lib/api-client-optimized';
 import type { Task } from '@/lib/types';
 
 /**
  * Enhanced TaskList Component with Search, Filters, and Statistics
+ * Optimized with React.memo and performance hooks
  */
 
 export interface TaskListProps {
@@ -20,7 +21,7 @@ export interface TaskListProps {
 
 type FilterType = 'all' | 'active' | 'completed';
 
-export function TaskList({ onCreateClick }: TaskListProps) {
+const TaskListComponent = ({ onCreateClick }: TaskListProps) => {
   // Task state
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,9 +39,9 @@ export function TaskList({ onCreateClick }: TaskListProps) {
   const [updatingTaskId, setUpdatingTaskId] = useState<number | null>(null);
 
   /**
-   * Fetch tasks from API
+   * Fetch tasks from API - memoized to prevent unnecessary re-renders
    */
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -57,7 +58,7 @@ export function TaskList({ onCreateClick }: TaskListProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchTasks();
@@ -102,28 +103,28 @@ export function TaskList({ onCreateClick }: TaskListProps) {
   }, [tasks]);
 
   /**
-   * Handle task creation success
+   * Handle task creation success - memoized to prevent unnecessary re-renders
    */
-  const handleCreateSuccess = (newTask: Task) => {
+  const handleCreateSuccess = useCallback((newTask: Task) => {
     setTasks((prev) => [newTask, ...prev]);
     setIsModalOpen(false);
-  };
+  }, []);
 
   /**
-   * Handle task update success
+   * Handle task update success - memoized to prevent unnecessary re-renders
    */
-  const handleUpdateSuccess = (updatedTask: Task) => {
+  const handleUpdateSuccess = useCallback((updatedTask: Task) => {
     setTasks((prev) =>
       prev.map((task) => (task.id === updatedTask.id ? updatedTask : task))
     );
     setIsModalOpen(false);
     setEditingTask(null);
-  };
+  }, []);
 
   /**
-   * Handle task deletion
+   * Handle task deletion - memoized to prevent unnecessary re-renders
    */
-  const handleDelete = async (taskId: number) => {
+  const handleDelete = useCallback(async (taskId: number) => {
     setUpdatingTaskId(taskId);
 
     try {
@@ -138,12 +139,12 @@ export function TaskList({ onCreateClick }: TaskListProps) {
     } finally {
       setUpdatingTaskId(null);
     }
-  };
+  }, []);
 
   /**
-   * Handle task completion toggle
+   * Handle task completion toggle - memoized to prevent unnecessary re-renders
    */
-  const handleToggleComplete = async (taskId: number, isComplete: boolean) => {
+  const handleToggleComplete = useCallback(async (taskId: number, isComplete: boolean) => {
     setUpdatingTaskId(taskId);
 
     // Optimistic update
@@ -177,31 +178,52 @@ export function TaskList({ onCreateClick }: TaskListProps) {
     } finally {
       setUpdatingTaskId(null);
     }
-  };
+  }, []);
 
   /**
-   * Handle edit button click
+   * Handle edit button click - memoized to prevent unnecessary re-renders
    */
-  const handleEdit = (task: Task) => {
+  const handleEdit = useCallback((task: Task) => {
     setEditingTask(task);
     setIsModalOpen(true);
-  };
+  }, []);
 
   /**
-   * Handle modal close
+   * Handle modal close - memoized to prevent unnecessary re-renders
    */
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setEditingTask(null);
-  };
+  }, []);
 
   /**
-   * Handle create button click
+   * Handle create button click - memoized to prevent unnecessary re-renders
    */
-  const handleCreateClick = () => {
+  const handleCreateClick = useCallback(() => {
     setEditingTask(null);
     setIsModalOpen(true);
-  };
+  }, []);
+
+  /**
+   * Handle search query change - memoized to prevent unnecessary re-renders
+   */
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  }, []);
+
+  /**
+   * Clear search query - memoized to prevent unnecessary re-renders
+   */
+  const clearSearch = useCallback(() => {
+    setSearchQuery('');
+  }, []);
+
+  /**
+   * Handle filter change - memoized to prevent unnecessary re-renders
+   */
+  const handleFilterChange = useCallback((newFilter: FilterType) => {
+    setFilter(newFilter);
+  }, []);
 
   // Loading state
   if (isLoading) {
@@ -261,14 +283,14 @@ export function TaskList({ onCreateClick }: TaskListProps) {
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         {/* Total Tasks */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border border-slate-200 dark:border-slate-700 transition-colors">
+        <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200 transition-all duration-300 hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Tasks</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{stats.total}</p>
+              <p className="text-sm font-medium text-gray-600">Total Tasks</p>
+              <p className="text-3xl font-bold text-gray-900 mt-2">{stats.total}</p>
             </div>
-            <div className="bg-slate-800 dark:bg-slate-700 rounded-lg p-2">
-              <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-blue-50 rounded-lg p-3">
+              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
               </svg>
             </div>
@@ -276,14 +298,14 @@ export function TaskList({ onCreateClick }: TaskListProps) {
         </div>
 
         {/* Active Tasks */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border border-slate-200 dark:border-slate-700 transition-colors">
+        <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200 transition-all duration-300 hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Active</p>
-              <p className="text-2xl font-bold text-amber-500 dark:text-amber-400 mt-1">{stats.active}</p>
+              <p className="text-sm font-medium text-gray-600">Active</p>
+              <p className="text-3xl font-bold text-yellow-600 mt-2">{stats.active}</p>
             </div>
-            <div className="bg-amber-500 dark:bg-amber-600 rounded-lg p-2">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-yellow-50 rounded-lg p-3">
+              <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -291,14 +313,14 @@ export function TaskList({ onCreateClick }: TaskListProps) {
         </div>
 
         {/* Completed Tasks */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border border-slate-200 dark:border-slate-700 transition-colors">
+        <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200 transition-all duration-300 hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Completed</p>
-              <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400 mt-1">{stats.completed}</p>
+              <p className="text-sm font-medium text-gray-600">Completed</p>
+              <p className="text-3xl font-bold text-green-600 mt-2">{stats.completed}</p>
             </div>
-            <div className="bg-cyan-600 dark:bg-cyan-700 rounded-lg p-2">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-green-50 rounded-lg p-3">
+              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -306,28 +328,35 @@ export function TaskList({ onCreateClick }: TaskListProps) {
         </div>
 
         {/* Completion Rate */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border border-slate-200 dark:border-slate-700 transition-colors">
+        <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200 transition-all duration-300 hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Completion</p>
-              <p className="text-2xl font-bold text-slate-800 dark:text-slate-200 mt-1">{stats.completionRate}%</p>
+              <p className="text-sm font-medium text-gray-600">Completion</p>
+              <p className="text-3xl font-bold text-gray-900 mt-2">{stats.completionRate}%</p>
             </div>
-            <div className="bg-slate-800 dark:bg-slate-700 rounded-lg p-2">
-              <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-blue-50 rounded-lg p-3">
+              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
             </div>
+          </div>
+          {/* Progress Bar */}
+          <div className="mt-3 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-500 transition-all duration-500 rounded-full"
+              style={{ width: `${stats.completionRate}%` }}
+            />
           </div>
         </div>
       </div>
 
       {/* Search and Filter Bar */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 mb-6 border border-slate-200 dark:border-slate-700">
+      <div className="bg-white rounded-lg shadow-sm p-5 mb-6 border border-gray-200">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search Input */}
           <div className="flex-1 relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg className="h-5 w-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -335,42 +364,52 @@ export function TaskList({ onCreateClick }: TaskListProps) {
               type="text"
               placeholder="Search tasks..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+              onChange={handleSearchChange}
+              className="block w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white text-gray-900 placeholder-gray-400"
             />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
           </div>
 
           {/* Filter Buttons */}
           <div className="flex gap-2">
             <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2.5 rounded-lg font-medium transition-all ${
+              onClick={() => handleFilterChange('all')}
+              className={`px-5 py-3 rounded-lg font-medium transition-all duration-300 ${
                 filter === 'all'
-                  ? 'bg-slate-800 text-white shadow-md'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              All ({stats.total})
+              All <span className="ml-1 text-sm opacity-75">({stats.total})</span>
             </button>
             <button
-              onClick={() => setFilter('active')}
-              className={`px-4 py-2.5 rounded-lg font-medium transition-all ${
+              onClick={() => handleFilterChange('active')}
+              className={`px-5 py-3 rounded-lg font-medium transition-all duration-300 ${
                 filter === 'active'
-                  ? 'bg-amber-500 text-white shadow-md'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
+                  ? 'bg-yellow-500 text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Active ({stats.active})
+              Active <span className="ml-1 text-sm opacity-75">({stats.active})</span>
             </button>
             <button
-              onClick={() => setFilter('completed')}
-              className={`px-4 py-2.5 rounded-lg font-medium transition-all ${
+              onClick={() => handleFilterChange('completed')}
+              className={`px-5 py-3 rounded-lg font-medium transition-all duration-300 ${
                 filter === 'completed'
-                  ? 'bg-cyan-600 text-white shadow-md'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
+                  ? 'bg-green-600 text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Done ({stats.completed})
+              Done <span className="ml-1 text-sm opacity-75">({stats.completed})</span>
             </button>
           </div>
         </div>
@@ -378,24 +417,33 @@ export function TaskList({ onCreateClick }: TaskListProps) {
 
       {/* Task List */}
       {filteredTasks.length === 0 ? (
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-12 text-center border border-slate-200 dark:border-slate-700">
-          <svg className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p className="text-slate-500 dark:text-slate-400 text-lg">No tasks found</p>
-          <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Try adjusting your search or filter</p>
+        <div className="bg-white rounded-lg shadow-sm p-16 text-center border border-gray-200">
+          <div className="max-w-sm mx-auto">
+            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p className="text-gray-900 text-xl font-semibold mb-2">No tasks found</p>
+            <p className="text-gray-500">Try adjusting your search or filter to find what you're looking for</p>
+          </div>
         </div>
       ) : (
         <div className="space-y-3">
-          {filteredTasks.map((task) => (
-            <TaskItem
+          {filteredTasks.map((task, index) => (
+            <div
               key={task.id}
-              task={task}
-              onToggleComplete={handleToggleComplete}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              isUpdating={updatingTaskId === task.id}
-            />
+              style={{ animationDelay: `${index * 50}ms` }}
+              className="animate-slide-up"
+            >
+              <TaskItem
+                task={task}
+                onToggleComplete={handleToggleComplete}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                isUpdating={updatingTaskId === task.id}
+              />
+            </div>
           ))}
         </div>
       )}
@@ -414,4 +462,11 @@ export function TaskList({ onCreateClick }: TaskListProps) {
       </Modal>
     </>
   );
-}
+};
+
+// Memoize the component to prevent unnecessary re-renders
+// Only re-render if onCreateClick function changes
+export const TaskList = memo(TaskListComponent, (prevProps, nextProps) => {
+  // Custom comparison function for better performance
+  return prevProps.onCreateClick === nextProps.onCreateClick;
+});

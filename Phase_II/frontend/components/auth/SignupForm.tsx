@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
-import { apiClient, ApiError } from '@/lib/api-client';
+import { apiClient, ApiError } from '@/lib/api-client-optimized';
 import {
   validateEmail,
   validatePassword,
@@ -124,12 +124,12 @@ export function SignupForm() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
+    <div>
       {/* Header */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
-        <p className="mt-2 text-sm text-gray-600">
-          Sign up to start managing your tasks
+        <h2 className="text-2xl font-bold text-slate-900 mb-1">Create your account</h2>
+        <p className="text-sm text-slate-600">
+          Get started with Pure Tasks in seconds
         </p>
       </div>
 
@@ -193,24 +193,11 @@ export function SignupForm() {
           variant="primary"
           loading={isSubmitting}
           disabled={isSubmitting}
-          className="w-full"
+          className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
         >
-          Sign Up
+          {isSubmitting ? 'Creating account...' : 'Create Account'}
         </Button>
       </form>
-
-      {/* Sign In Link */}
-      <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600">
-          Already have an account?{' '}
-          <Link
-            href="/signin"
-            className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline"
-          >
-            Sign in
-          </Link>
-        </p>
-      </div>
     </div>
   );
 }

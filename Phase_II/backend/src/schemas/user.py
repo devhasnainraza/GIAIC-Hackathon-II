@@ -51,3 +51,23 @@ class AuthResponse(BaseModel):
     """
     user: UserResponse
     token: str
+
+class ForgotPasswordRequest(BaseModel):
+    """
+    Request schema for forgot password.
+
+    Attributes:
+        email: User's email address to send reset link
+    """
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    """
+    Request schema for password reset.
+
+    Attributes:
+        token: Password reset token from email
+        new_password: New password (minimum 8 characters)
+    """
+    token: str = Field(min_length=10, description="Password reset token")
+    new_password: str = Field(min_length=8, description="New password must be at least 8 characters")
