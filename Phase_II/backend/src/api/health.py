@@ -47,21 +47,26 @@ async def health_check(db: Session = Depends(get_db)):
             "message": f"Database connection failed: {str(e)}"
         }
 
-    # Check system resources
+    # Check system resources (optional in serverless environments)
     try:
         cpu_percent = psutil.cpu_percent(interval=0.1)
         memory = psutil.virtual_memory()
-        disk = psutil.disk_usage('/')
 
         health_status["checks"]["system"] = {
             "status": "healthy",
             "cpu_percent": cpu_percent,
-            "memory_percent": memory.percent,
-            "disk_percent": disk.percent
+            "memory_percent": memory.percent
         }
 
+        # Try to get disk usage (may not work in serverless)
+        try:
+            disk = psutil.disk_usage('/')
+            health_status["checks"]["system"]["disk_percent"] = disk.percent
+        except:
+            pass  # Disk metrics not available in serverless
+
         # Warn if resources are high
-        if cpu_percent > 80 or memory.percent > 80 or disk.percent > 80:
+        if cpu_percent > 80 or memory.percent > 80:
             health_status["checks"]["system"]["status"] = "warning"
             health_status["checks"]["system"]["message"] = "High resource usage detected"
 
@@ -69,7 +74,7 @@ async def health_check(db: Session = Depends(get_db)):
         logger.warning(f"System health check failed: {str(e)}")
         health_status["checks"]["system"] = {
             "status": "unknown",
-            "message": "Could not retrieve system metrics"
+            "message": "System metrics not available (serverless environment)"
         }
 
     # Set overall status
@@ -128,10 +133,27 @@ async def metrics(db: Session = Depends(get_db)):
         System and application metrics
     """
     try:
-        # System metrics
-        cpu_percent = psutil.cpu_percent(interval=0.1)
-        memory = psutil.virtual_memory()
-        disk = psutil.disk_usage('/')
+        # System metrics (optional in serverless)
+        system_metrics = {}
+        try:
+            cpu_percent = psutil.cpu_percent(interval=0.1)
+            memory = psutil.virtual_memory()
+            system_metrics = {
+                "cpu_percent": cpu_percent,
+                "memory_percent": memory.percent,
+                "memory_available_mb": memory.available / (1024 * 1024)
+            }
+
+            # Try to get disk metrics (may not work in serverless)
+            try:
+                disk = psutil.disk_usage('/')
+                system_metrics["disk_percent"] = disk.percent
+                system_metrics["disk_free_gb"] = disk.free / (1024 * 1024 * 1024)
+            except:
+                pass
+        except Exception as e:
+            logger.warning(f"Could not collect system metrics: {str(e)}")
+            system_metrics = {"status": "unavailable", "message": "Serverless environment"}
 
         # Database metrics
         db_result = db.execute(text("""
@@ -144,13 +166,7 @@ async def metrics(db: Session = Depends(get_db)):
 
         metrics_data = {
             "timestamp": datetime.utcnow().isoformat(),
-            "system": {
-                "cpu_percent": cpu_percent,
-                "memory_percent": memory.percent,
-                "memory_available_mb": memory.available / (1024 * 1024),
-                "disk_percent": disk.percent,
-                "disk_free_gb": disk.free / (1024 * 1024 * 1024)
-            },
+            "system": system_metrics,
             "database": {
                 "total_users": db_stats[0] if db_stats else 0,
                 "total_tasks": db_stats[1] if db_stats else 0,
