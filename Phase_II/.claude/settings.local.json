@@ -64,7 +64,9 @@
       "Bash(git add -A)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(git add frontend/components/auth/ForgotPasswordForm.tsx frontend/components/auth/ResetPasswordForm.tsx)"
+      "Bash(git add frontend/components/auth/ForgotPasswordForm.tsx frontend/components/auth/ResetPasswordForm.tsx)",
+      "Bash(git add:*)",
+      "Bash(vercel logs:*)"
     ]
   }
 }
