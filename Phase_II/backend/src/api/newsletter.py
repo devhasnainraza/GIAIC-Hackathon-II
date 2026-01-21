@@ -7,7 +7,7 @@ from datetime import datetime
 
 from src.database import get_session
 from src.models.newsletter import NewsletterSubscriber
-from src.services.email_service import send_newsletter_confirmation, send_newsletter_update
+from src.services.newsletter_service import send_newsletter_confirmation, send_newsletter_update, send_welcome_newsletter
 from pydantic import BaseModel, EmailStr
 
 router = APIRouter(prefix="/api/newsletter", tags=["Newsletter"])
