@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   Home,
@@ -122,8 +123,14 @@ export default function LarkSidebar({
               </div>
             ) : (
               <div className="w-full flex justify-center">
-                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 transition-transform hover:scale-110">
-                  <span className="text-white font-bold text-lg">PT</span>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg transition-transform hover:scale-110 overflow-hidden">
+                  <Image
+                    src="/brand-logo.PNG"
+                    alt="Pure Tasks Logo"
+                    width={40}
+                    height={40}
+                    className="object-contain"
+                  />
                 </div>
               </div>
             )}
