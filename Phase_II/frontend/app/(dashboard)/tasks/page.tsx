@@ -8,6 +8,7 @@ import TimelineView from '@/components/lark/TimelineView';
 import TaskDetailPanel from '@/components/lark/TaskDetailPanel';
 import CreateTaskModal from '@/components/lark/CreateTaskModal';
 import FilterPanel from '@/components/lark/FilterPanel';
+import ExportDropdown from '@/components/lark/ExportDropdown';
 import { getToken } from '@/lib/auth';
 import {
   Plus,
@@ -776,11 +777,8 @@ export default function TasksPage() {
               )}
             </button>
 
-            {/* Export Button */}
-            <button className="flex items-center gap-2 px-4 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-50 transition-all duration-200 text-slate-500">
-              <Download className="w-4 h-4" />
-              <span className="hidden sm:inline font-medium text-slate-500">Export</span>
-            </button>
+            {/* Export Dropdown */}
+            <ExportDropdown tasks={filteredTasks} disabled={loading} />
 
             {/* Create Task Button */}
             <button

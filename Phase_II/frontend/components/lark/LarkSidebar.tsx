@@ -117,9 +117,15 @@ export default function LarkSidebar({
           {/* Top Section - Logo & Close Button - Enhanced */}
           <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50/50">
             {!isCollapsed ? (
-              <div className="transition-all duration-300">
-                <h1 className="text-xl font-bold text-slate-900 tracking-tight">Pure Tasks</h1>
-                <p className="text-xs text-emerald-600 mt-0.5 font-medium">Task Management</p>
+              <div className="transition-all duration-300 flex items-center">
+                <Image
+                  src="/full-logo.png"
+                  alt="Pure Tasks"
+                  width={150}
+                  height={50}
+                  className="object-contain"
+                  priority
+                />
               </div>
             ) : (
               <div className="w-full flex justify-center">

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { CheckSquare } from 'lucide-react';
 import HeroSection from '@/components/landing/HeroSection';
 import FeaturesSection from '@/components/landing/FeaturesSection';
@@ -75,8 +76,15 @@ export default function HomePage() {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2.5 group">
-              <div className="bg-emerald-600 rounded-lg p-2 transition-colors group-hover:bg-emerald-700">
-                <CheckSquare className="w-5 h-5 text-white" />
+              <div className="transition-all duration-300 group-hover:scale-105">
+                <Image
+                  src="/brand-logo.PNG"
+                  alt="Pure Tasks"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                  priority
+                />
               </div>
               <div>
                 <h1 className="text-lg font-bold text-slate-900">Pure Tasks</h1>

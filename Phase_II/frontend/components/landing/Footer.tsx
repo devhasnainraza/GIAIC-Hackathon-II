@@ -1,40 +1,41 @@
 'use client';
 
 import Link from 'next/link';
-import { Twitter, Github, Linkedin, Youtube, Mail, Send, CheckSquare } from 'lucide-react';
+import { Twitter, Github, Linkedin, Youtube, Mail, Send} from 'lucide-react';
+import Image from 'next/image';
 
 const footerLinks = {
   product: [
-    { name: 'Features', href: '#features' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'Security', href: '#security' },
-    { name: 'Roadmap', href: '#roadmap' },
+    { name: 'Features', href: '/#features' },
+    { name: 'Pricing', href: '/#pricing' },
+    { name: 'Security', href: '/#security' },
+    { name: 'Roadmap', href: '/#roadmap' },
   ],
   company: [
-    { name: 'About', href: '#about' },
-    { name: 'Blog', href: '#blog' },
-    { name: 'Careers', href: '#careers' },
-    { name: 'Press', href: '#press' },
+    { name: 'About', href: '/about' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Careers', href: '/careers' },
+    { name: 'Press', href: '/press' },
   ],
   resources: [
-    { name: 'Documentation', href: '#docs' },
-    { name: 'Help Center', href: '#help' },
-    { name: 'API Reference', href: '#api' },
-    { name: 'Community', href: '#community' },
+    { name: 'Documentation', href: '/docs' },
+    { name: 'Help Center', href: '/help' },
+    { name: 'API Reference', href: '/docs#api' },
+    { name: 'Community', href: '/community' },
   ],
   legal: [
-    { name: 'Privacy', href: '#privacy' },
-    { name: 'Terms', href: '#terms' },
-    { name: 'Cookie Policy', href: '#cookies' },
-    { name: 'Licenses', href: '#licenses' },
+    { name: 'Privacy', href: '/privacy' },
+    { name: 'Terms', href: '/terms' },
+    { name: 'Cookie Policy', href: '/cookies' },
+    { name: 'Licenses', href: '/licenses' },
   ],
 };
 
 const socialLinks = [
-  { name: 'Twitter', href: '#', icon: Twitter },
-  { name: 'GitHub', href: '#', icon: Github },
-  { name: 'LinkedIn', href: '#', icon: Linkedin },
-  { name: 'YouTube', href: '#', icon: Youtube },
+  { name: 'Twitter', href: 'https://x.com/mhattari1112', icon: Twitter },
+  { name: 'GitHub', href: 'https://github.com/devhasnainraza', icon: Github },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/md-nain', icon: Linkedin },
+  { name: 'YouTube', href: 'https://www.youtube.com/@1-nain', icon: Youtube },
 ];
 
 export default function Footer() {
@@ -53,10 +54,15 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6 group">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></div>
-                <div className="relative bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-2.5 transition-transform group-hover:scale-110 group-hover:rotate-6 duration-300 shadow-lg shadow-emerald-500/30">
-                  <CheckSquare className="w-6 h-6 text-white" strokeWidth={2.5} />
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-br  rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                <Image                                                                                                                 
+                      src="/brand-logo.PNG"                                                                                                
+                       alt="Pure Tasks"                                                                                                     
+                     width={40}                                                                                                           
+                      height={40}                                                                                                          
+                      className="object-contain"                                                                                           
+                      priority                                                                                                             
+                     />   
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-white">Pure Tasks</h3>
@@ -144,15 +150,15 @@ export default function Footer() {
               <span className="text-emerald-500">❤️</span> for productivity.
             </p>
             <div className="flex items-center gap-6 text-sm">
-              <a href="#" className="text-slate-500 hover:text-emerald-400 transition-all duration-300 font-medium hover:scale-105 inline-block">
+              <a href="/privacy" className="text-slate-500 hover:text-emerald-400 transition-all duration-300 font-medium hover:scale-105 inline-block">
                 Privacy Policy
               </a>
               <span className="text-slate-700">•</span>
-              <a href="#" className="text-slate-500 hover:text-emerald-400 transition-all duration-300 font-medium hover:scale-105 inline-block">
+              <a href="/terms" className="text-slate-500 hover:text-emerald-400 transition-all duration-300 font-medium hover:scale-105 inline-block">
                 Terms of Service
               </a>
               <span className="text-slate-700">•</span>
-              <a href="#" className="text-slate-500 hover:text-emerald-400 transition-all duration-300 font-medium hover:scale-105 inline-block">
+              <a href="/cookies" className="text-slate-500 hover:text-emerald-400 transition-all duration-300 font-medium hover:scale-105 inline-block">
                 Cookie Settings
               </a>
             </div>

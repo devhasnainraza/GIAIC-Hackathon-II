@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { CheckSquare, Zap, Shield, Users, TrendingUp, Star, ArrowRight } from 'lucide-react';
 
 interface AuthLayoutProps {
@@ -45,8 +46,15 @@ export function AuthLayout({ children, type }: AuthLayoutProps) {
         <div className="mx-auto w-full max-w-sm lg:max-w-md py-8">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 mb-6 group">
-            <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-2 shadow-lg group-hover:shadow-emerald-500/50 transition-all duration-300 group-hover:scale-105">
-              <CheckSquare className="w-5 h-5 text-white" />
+            <div className="transition-all duration-300 group-hover:scale-105">
+              <Image
+                src="/brand-logo.PNG"
+                alt="Pure Tasks"
+                width={48}
+                height={48}
+                className="object-contain"
+                priority
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold text-slate-900">Pure Tasks</h1>
