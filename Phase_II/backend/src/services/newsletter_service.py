@@ -2,6 +2,7 @@
 import logging
 from typing import Optional
 from src.services.email_provider import send_email
+from src.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +18,7 @@ async def send_newsletter_confirmation(email: str, verification_token: str) -> b
     Returns:
         bool: True if email sent successfully, False otherwise
     """
-    verification_url = f"https://your-frontend-url.vercel.app/newsletter/verify/{verification_token}"
+    verification_url = f"{settings.FRONTEND_URL}/newsletter/verify/{verification_token}"
 
     subject = "Confirm Your Newsletter Subscription - Pure Tasks"
 
@@ -151,7 +152,7 @@ async def send_newsletter_update(
     Returns:
         bool: True if email sent successfully, False otherwise
     """
-    unsubscribe_url = f"https://your-frontend-url.vercel.app/newsletter/unsubscribe?email={email}"
+    unsubscribe_url = f"{settings.FRONTEND_URL}/newsletter/unsubscribe?email={email}"
 
     html_content = f"""
     <!DOCTYPE html>
@@ -267,9 +268,9 @@ async def send_welcome_newsletter(email: str) -> bool:
     <h3>Get Started</h3>
     <p>Here are some resources to help you get the most out of Pure Tasks:</p>
     <ul>
-        <li><a href="https://your-frontend-url.vercel.app/docs">Documentation</a> - Learn all the features</li>
-        <li><a href="https://your-frontend-url.vercel.app/blog">Blog</a> - Read our latest articles</li>
-        <li><a href="https://your-frontend-url.vercel.app/community">Community</a> - Connect with other users</li>
+        <li><a href="{settings.FRONTEND_URL}/docs">Documentation</a> - Learn all the features</li>
+        <li><a href="{settings.FRONTEND_URL}/blog">Blog</a> - Read our latest articles</li>
+        <li><a href="{settings.FRONTEND_URL}/community">Community</a> - Connect with other users</li>
     </ul>
 
     <p>Thank you for joining us on this productivity journey!</p>
