@@ -19,7 +19,7 @@ import type {
 /**
  * API Client Configuration
  */
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hasnain-raza3-pure-tasks-backend.hf.space';
 const DEFAULT_TIMEOUT = 10000; // 10 seconds
 const DEFAULT_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 const MAX_RETRIES = 3;

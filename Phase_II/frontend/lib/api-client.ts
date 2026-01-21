@@ -8,7 +8,7 @@ import type {
 /**
  * API Client Configuration
  */
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hasnain-raza3-pure-tasks-backend.hf.space';
 
 /**
  * API Error Class

@@ -128,7 +128,7 @@ export default function SettingsPage() {
 
     setSaveStatus('saving');
     try {
-      const response = await fetch('http://localhost:8000/api/users/me', {
+      const response = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/users/me', {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -181,7 +181,7 @@ export default function SettingsPage() {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/users/me/password', {
+      const response = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/users/me/password', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -264,7 +264,7 @@ export default function SettingsPage() {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/users/me', {
+      const response = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/users/me', {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

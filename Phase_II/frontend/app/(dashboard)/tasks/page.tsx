@@ -124,7 +124,7 @@ export default function TasksPage() {
         return;
       }
 
-      const response = await fetch('http://localhost:8000/api/tasks', {
+      const response = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/tasks', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -379,7 +379,7 @@ export default function TasksPage() {
       // Get the old task for comparison
       const oldTask = tasks.find(t => t.id === taskId);
 
-      const response = await fetch(`http://localhost:8000/api/tasks/${taskId}`, {
+      const response = await fetch(`https://hasnain-raza3-pure-tasks-backend.hf.space/api/tasks/${taskId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -434,7 +434,7 @@ export default function TasksPage() {
       const token = getToken();
       if (!token) return;
 
-      const response = await fetch(`http://localhost:8000/api/tasks/${taskId}`, {
+      const response = await fetch(`https://hasnain-raza3-pure-tasks-backend.hf.space/api/tasks/${taskId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -484,7 +484,7 @@ export default function TasksPage() {
       const token = getToken();
       if (!token) return;
 
-      const response = await fetch('http://localhost:8000/api/tasks', {
+      const response = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/tasks', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

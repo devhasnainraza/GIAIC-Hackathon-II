@@ -39,7 +39,7 @@ export default function NotificationDropdown() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   // API base URL
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hasnain-raza3-pure-tasks-backend.hf.space';
 
   // Fetch notifications from API
   const fetchNotifications = async () => {

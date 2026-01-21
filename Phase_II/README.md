@@ -159,9 +159,9 @@ The application uses a relational database with the following core tables:
    uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
    ```
 
-   The API will be available at `http://localhost:8000`
-   - API Documentation: `http://localhost:8000/docs`
-   - Alternative Docs: `http://localhost:8000/redoc`
+   The API will be available at `https://hasnain-raza3-pure-tasks-backend.hf.space`
+   - API Documentation: `https://hasnain-raza3-pure-tasks-backend.hf.space/docs`
+   - Alternative Docs: `https://hasnain-raza3-pure-tasks-backend.hf.space/redoc`
 
 ### Frontend Setup
 
@@ -179,7 +179,7 @@ The application uses a relational database with the following core tables:
 
    Create `.env.local`:
    ```env
-   NEXT_PUBLIC_API_URL=http://localhost:8000
+   NEXT_PUBLIC_API_URL=https://hasnain-raza3-pure-tasks-backend.hf.space
    ```
 
 4. **Start the development server**
@@ -256,7 +256,7 @@ For production deployment, refer to:
 - `GET /health/live` - Liveness probe (Kubernetes)
 - `GET /metrics` - Application metrics
 
-For detailed API documentation, visit `http://localhost:8000/docs` when running the backend.
+For detailed API documentation, visit `https://hasnain-raza3-pure-tasks-backend.hf.space/docs` when running the backend.
 
 ## 🎨 UI Components
 

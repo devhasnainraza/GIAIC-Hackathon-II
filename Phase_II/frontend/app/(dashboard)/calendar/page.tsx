@@ -147,7 +147,7 @@ export default function CalendarPage() {
           return;
         }
 
-        const response = await fetch('http://localhost:8000/api/tasks', {
+        const response = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/tasks', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

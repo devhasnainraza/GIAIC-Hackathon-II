@@ -210,7 +210,7 @@ export default function ProfilePage() {
       setError(null);
 
       // Fetch full user profile (including avatar_url)
-      const profileResponse = await fetch('http://localhost:8000/api/users/me', {
+      const profileResponse = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/users/me', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -250,7 +250,7 @@ export default function ProfilePage() {
       }
 
       // Fetch user statistics from backend
-      const statsResponse = await fetch('http://localhost:8000/api/users/me/stats', {
+      const statsResponse = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/users/me/stats', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -276,7 +276,7 @@ export default function ProfilePage() {
     if (!token) return;
 
     try {
-      const response = await fetch('http://localhost:8000/api/users/me', {
+      const response = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/users/me', {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -306,7 +306,7 @@ export default function ProfilePage() {
     if (!token) return;
 
     try {
-      const response = await fetch('http://localhost:8000/api/users/me/settings', {
+      const response = await fetch('https://hasnain-raza3-pure-tasks-backend.hf.space/api/users/me/settings', {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
