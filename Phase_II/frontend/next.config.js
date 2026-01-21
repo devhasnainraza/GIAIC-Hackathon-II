@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Output configuration for Vercel
+  output: 'standalone',
+
   // Performance optimizations
   experimental: {
     // Enable optimizations compatible with Next.js 16
