@@ -127,7 +127,7 @@ async def root():
 
 
 # Import and include routers
-from src.api import auth, tasks, users, notifications, projects, tags, health
+from src.api import auth, tasks, users, notifications, projects, tags, health, newsletter
 
 app.include_router(health.router, prefix="/api")
 app.include_router(auth.router, prefix="/api")
@@ -136,6 +136,7 @@ app.include_router(users.router, prefix="/api")
 app.include_router(notifications.router, prefix="/api")
 app.include_router(projects.router, prefix="/api")
 app.include_router(tags.router, prefix="/api")
+app.include_router(newsletter.router)
 
 logger.info(
     "Application started successfully",

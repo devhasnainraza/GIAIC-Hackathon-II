@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Twitter, Github, Linkedin, Youtube, Mail, Send} from 'lucide-react';
+import { Twitter, Github, Linkedin, Youtube, Mail} from 'lucide-react';
 import Image from 'next/image';
+import NewsletterForm from '@/components/newsletter/NewsletterForm';
 
 const footerLinks = {
   product: [
@@ -122,20 +123,7 @@ export default function Footer() {
             <p className="text-slate-400 mb-6 leading-relaxed">
               Get the latest updates, tips, and productivity insights delivered to your inbox.
             </p>
-            <form className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white placeholder-slate-500 transition-all duration-300"
-              />
-              <button
-                type="submit"
-                className="group px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 flex items-center gap-2"
-              >
-                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                Subscribe
-              </button>
-            </form>
+            <NewsletterForm variant="compact" />
           </div>
         </div>
       </div>
