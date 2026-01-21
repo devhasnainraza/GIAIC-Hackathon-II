@@ -13,6 +13,7 @@ from src.models.task import Task
 from src.models.notification import Notification
 from src.models.project import Project
 from src.models.tag import Tag, TaskTag
+from src.models.newsletter import NewsletterSubscriber
 
 # Create engine with connection pooling and optimized settings
 engine = create_engine(
