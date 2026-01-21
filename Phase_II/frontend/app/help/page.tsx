@@ -66,7 +66,7 @@ export default function HelpPage() {
         },
         {
           q: 'Forgot my password?',
-          a: 'Click "Forgot Password" on the sign-in page. Enter your email and we/'ll send you a reset link.'
+          a: 'Click "Forgot Password" on the sign-in page. Enter your email and we'll send you a reset link.'
         },
         {
           q: 'Not receiving notifications?',
