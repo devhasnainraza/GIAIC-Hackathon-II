@@ -1,7 +1,7 @@
 """Email service for newsletter functionality."""
 import logging
 from typing import Optional
-from src.services.email_provider import send_email
+from src.services.email_service import send_email
 from src.config import settings
 
 logger = logging.getLogger(__name__)

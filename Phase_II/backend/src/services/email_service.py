@@ -303,3 +303,26 @@ def get_token_expiry() -> datetime:
 
 # Singleton instance
 email_service = EmailService()
+
+
+async def send_email(
+    to_email: str,
+    subject: str,
+    html_content: str,
+    text_content: str = ""
+) -> bool:
+    """
+    Send email using the configured email provider.
+
+    This is a convenience function that uses the singleton EmailService instance.
+
+    Args:
+        to_email: Recipient email address
+        subject: Email subject line
+        html_content: HTML email body
+        text_content: Plain text email body (optional)
+
+    Returns:
+        bool: True if email sent successfully, False otherwise
+    """
+    return await email_service._send_email(to_email, subject, html_content, text_content)
