@@ -1,1 +1,0 @@
-GET https://pure-tasks-backend.vercel.app/ 500 (Internal Server Error)
