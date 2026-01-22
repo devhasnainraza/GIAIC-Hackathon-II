@@ -1,0 +1,298 @@
+openapi: 3.0.3
+info:
+  title: Authentication API
+  description: |
+    JWT-based authentication API for the Todo Full-Stack Web Application.
+
+    **Security Model**:
+    - Better Auth issues JWT tokens on the frontend
+    - Backend verifies JWT signatures using shared secret
+    - Tokens expire after 7 days
+    - All protected endpoints require valid JWT token
+
+    **Authentication Flow**:
+    1. User registers or logs in via Better Auth
+    2. Better Auth issues JWT token with user claims
+    3. Frontend includes token in Authorization header
+    4. Backend verifies token and extracts user identity
+    5. User can access protected resources
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.production.com
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User registration, login, and logout operations
+
+paths:
+  /api/auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register new user account
+      description: |
+        Creates a new user account with email and password.
+
+        **Process**:
+        1. Validates email format and password requirements
+        2. Checks for duplicate email addresses
+        3. Hashes password using bcrypt (cost factor 12)
+        4. Creates user record in database
+        5. Issues JWT token for immediate authentication
+
+        **Security**:
+        - Password must be minimum 8 characters
+        - Email must be unique (409 if duplicate)
+        - Password hashed before storage (never plaintext)
+        - JWT token issued with 7-day expiration
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+            examples:
+              validRegistration:
+                summary: Valid registration
+                value:
+                  email: user@example.com
+                  password: SecurePass123
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+              examples:
+                successfulRegistration:
+                  summary: Successful registration
+                  value:
+                    user:
+                      id: 1
+                      email: user@example.com
+                      created_at: "2026-01-09T10:00:00Z"
+                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '400':
+          description: Invalid request (validation error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidEmail:
+                  summary: Invalid email format
+                  value:
+                    error: Invalid email format
+                shortPassword:
+                  summary: Password too short
+                  value:
+                    error: Password must be at least 8 characters
+        '409':
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                duplicateEmail:
+                  summary: Duplicate email
+                  value:
+                    error: Email already registered
+
+  /api/auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login with email and password
+      description: |
+        Authenticates user with email and password credentials.
+
+        **Process**:
+        1. Validates email format
+        2. Looks up user by email
+        3. Verifies password hash using bcrypt
+        4. Issues JWT token if credentials valid
+
+        **Security**:
+        - Password verified using constant-time comparison
+        - Generic error message (no email enumeration)
+        - JWT token issued with 7-day expiration
+        - Failed attempts not rate-limited (consider adding)
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+            examples:
+              validLogin:
+                summary: Valid login
+                value:
+                  email: user@example.com
+                  password: SecurePass123
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+              examples:
+                successfulLogin:
+                  summary: Successful login
+                  value:
+                    user:
+                      id: 1
+                      email: user@example.com
+                      created_at: "2026-01-09T10:00:00Z"
+                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidCredentials:
+                  summary: Invalid email or password
+                  value:
+                    error: Invalid email or password
+
+  /api/auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout current user
+      description: |
+        Logout endpoint for client-side token removal.
+
+        **Note**: JWT tokens are stateless, so logout is handled client-side
+        by removing the token from storage. This endpoint exists for API
+        consistency and future enhancements (e.g., token blacklisting).
+
+        **Process**:
+        1. Client sends logout request (optional)
+        2. Server acknowledges (no server-side state change)
+        3. Client clears token from storage
+        4. Token will expire naturally after 7 days
+      operationId: logoutUser
+      responses:
+        '200':
+          description: Logout acknowledged
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Logged out successfully
+
+components:
+  schemas:
+    UserRegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: User's email address (must be unique)
+          example: user@example.com
+        password:
+          type: string
+          minLength: 8
+          maxLength: 255
+          format: password
+          description: User's password (minimum 8 characters)
+          example: SecurePass123
+
+    UserLoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          description: User's password
+          example: SecurePass123
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique user identifier
+          example: 1
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: user@example.com
+        created_at:
+          type: string
+          format: date-time
+          description: Account creation timestamp (ISO 8601)
+          example: "2026-01-09T10:00:00Z"
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserResponse'
+        token:
+          type: string
+          description: |
+            JWT access token (7-day expiration)
+
+            **Token Structure**:
+            - Algorithm: HS256
+            - Claims: sub (user ID), email, exp (expiration), iat (issued at)
+            - Signature: HMAC using shared secret
+
+            **Usage**: Include in Authorization header as "Bearer <token>"
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjMiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJleHAiOjE3MDQ4MDAwMDAsImlhdCI6MTcwNDE5NTIwMH0.signature
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message describing what went wrong
+          example: Invalid email or password
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT token authentication
+
+        **How to use**:
+        1. Register or login to obtain JWT token
+        2. Include token in Authorization header: "Bearer <token>"
+        3. Token valid for 7 days from issuance
+        4. Token must be renewed after expiration
+
+security: []  # Authentication endpoints don't require authentication
