@@ -136,13 +136,9 @@ export default function AIChatPreview() {
             <div className="border-b border-slate-200/50 px-6 py-4 bg-gradient-to-r from-emerald-500 via-emerald-600 to-purple-600 p-6 backdrop-blur-md">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                    <img
-                      src="logo 1.png"
-                      alt="logo"
-                      className="w-10 h-10"
-                    />
-                  </div>
+                <div className="w-12 h-12 bg-white/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                        <img src="AI-Logo.png" alt="AI-Logo" className='w-12 h-12' />
+                      </div>
                   <div>
                     <h3 className="font-semibold text-2xl text-white">
                       Pure Tasks Assistant

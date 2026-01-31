@@ -185,24 +185,11 @@ export default function ChatInterface({
       {messages.length > 0 && (
         <div className="border-b border-slate-200/50 px-6 py-4 bg-gradient-to-r from-emerald-500 via-emerald-600 to-purple-600 p-6 backdrop-blur-md">
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              {/* <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30"> */}
-                {/* <img
-                  src="logo 1.png"
-                  alt="logo"
-                  className="w-10 h-10"
-                /> */}
-              {/* </div> */}
-              {/* <div>
-                <h3 className="font-semibold text-lg text-white">
-                  Pure Tasks Assistant
-                </h3>
-                <p className="text-xs text-white">{messages.length} messages</p>
-              </div> */}
+            <div className="flex items-center gap-3">              
               <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-white/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
                         {/* <MessageSquare className="w-6 h-6 text-white" /> */}
-                        <img src="logo.png" alt="logo" className='w-10 h-10' />
+                        <img src="AI-Logo.png" alt="AI-Logo" className='w-12 h-12' />
                       </div>
                       <div>
                         <h3 className="text-lg font-bold text-white">Pure Task Assistant</h3>
@@ -241,8 +228,8 @@ export default function ChatInterface({
               <div className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-2xl shadow-emerald-500/30 ">
                 {/* <Sparkles className="w-10 h-10 text-white" /> */}
                 <img
-                  src="logo.png"
-                  alt="logo"
+                  src="AI-Logo.png"
+                  alt="AI-Logo"
                   className="w-100 h-100"
                 />
               </div>
