@@ -83,7 +83,8 @@
       "Bash(npm uninstall:*)",
       "Bash(git checkout HEAD -- components/chat/ChatInterface.tsx app/chat/page.tsx app/globals.css tailwind.config.js)",
       "Bash(git checkout:*)",
-      "Bash(npm run)"
+      "Bash(npm run)",
+      "Bash(git remote add:*)"
     ]
   }
 }
