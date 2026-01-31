@@ -137,7 +137,7 @@ export default function AIChatPreview() {
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-white/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                        <img src="AI-Logo.png" alt="AI-Logo" className='w-12 h-12' />
+                        <img src="/AI-Logo.png" alt="AI-Logo" className='w-12 h-12' />
                       </div>
                   <div>
                     <h3 className="font-semibold text-2xl text-white">
