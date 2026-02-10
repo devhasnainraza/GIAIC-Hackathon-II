@@ -1,0 +1,142 @@
+Thank you for installing {{ .Chart.Name }}!
+
+Your Todo AI Chatbot has been deployed to Kubernetes.
+
+=============================================================================
+DEPLOYMENT INFORMATION
+=============================================================================
+
+Release Name: {{ .Release.Name }}
+Namespace: {{ .Values.global.namespace }}
+Environment: {{ .Values.global.environment }}
+
+=============================================================================
+ACCESSING THE APPLICATION
+=============================================================================
+
+{{- if eq .Values.frontend.service.type "NodePort" }}
+
+1. Get the Minikube IP address:
+
+   minikube ip
+
+2. Access the frontend application:
+
+   URL: http://<minikube-ip>:{{ .Values.frontend.service.nodePort }}
+
+   Example: http://192.168.49.2:{{ .Values.frontend.service.nodePort }}
+
+{{- else if eq .Values.frontend.service.type "LoadBalancer" }}
+
+1. Get the LoadBalancer IP:
+
+   kubectl get service frontend-service -n {{ .Values.global.namespace }}
+
+2. Access the frontend application:
+
+   URL: http://<EXTERNAL-IP>:{{ .Values.frontend.service.port }}
+
+{{- else }}
+
+1. Port-forward the frontend service:
+
+   kubectl port-forward -n {{ .Values.global.namespace }} service/frontend-service {{ .Values.frontend.service.port }}:{{ .Values.frontend.service.port }}
+
+2. Access the frontend application:
+
+   URL: http://localhost:{{ .Values.frontend.service.port }}
+
+{{- end }}
+
+=============================================================================
+CHECKING DEPLOYMENT STATUS
+=============================================================================
+
+1. Check pod status:
+
+   kubectl get pods -n {{ .Values.global.namespace }}
+
+2. Check service status:
+
+   kubectl get services -n {{ .Values.global.namespace }}
+
+3. View backend logs:
+
+   kubectl logs -n {{ .Values.global.namespace }} -l app=backend -f
+
+4. View frontend logs:
+
+   kubectl logs -n {{ .Values.global.namespace }} -l app=frontend -f
+
+=============================================================================
+HEALTH CHECKS
+=============================================================================
+
+Backend health endpoint:
+  kubectl port-forward -n {{ .Values.global.namespace }} service/backend-service 8000:8000
+  curl http://localhost:8000/api/health
+
+Frontend health endpoint:
+  curl http://<minikube-ip>:{{ .Values.frontend.service.nodePort }}
+
+=============================================================================
+SCALING
+=============================================================================
+
+Scale backend:
+  kubectl scale deployment backend -n {{ .Values.global.namespace }} --replicas=3
+
+Scale frontend:
+  kubectl scale deployment frontend -n {{ .Values.global.namespace }} --replicas=2
+
+=============================================================================
+UPGRADING
+=============================================================================
+
+To upgrade this release:
+
+  helm upgrade {{ .Release.Name }} ./helm/todo-chatbot -f values-{{ .Values.global.environment }}.yaml
+
+=============================================================================
+ROLLBACK
+=============================================================================
+
+To rollback to the previous version:
+
+  helm rollback {{ .Release.Name }}
+
+=============================================================================
+UNINSTALLING
+=============================================================================
+
+To uninstall this release:
+
+  helm uninstall {{ .Release.Name }}
+
+To also delete the namespace:
+
+  kubectl delete namespace {{ .Values.global.namespace }}
+
+=============================================================================
+TROUBLESHOOTING
+=============================================================================
+
+If pods are not starting:
+
+1. Check pod events:
+   kubectl describe pod -n {{ .Values.global.namespace }} <pod-name>
+
+2. Check if images are loaded (Minikube):
+   minikube image ls | grep todo
+
+3. Verify secrets are configured:
+   kubectl get secret -n {{ .Values.global.namespace }} todo-app-secrets
+
+4. Check resource availability:
+   kubectl top nodes
+   kubectl top pods -n {{ .Values.global.namespace }}
+
+For more help, see the documentation at:
+  https://github.com/yourusername/todo-chatbot/tree/main/Phase_VI
+
+=============================================================================

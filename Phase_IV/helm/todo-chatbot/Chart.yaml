@@ -1,0 +1,20 @@
+apiVersion: v2
+name: todo-chatbot
+description: AI-Powered Todo Chatbot with Conversational Interface
+version: 1.0.0
+appVersion: "1.0.0"
+type: application
+keywords:
+  - todo
+  - chatbot
+  - ai
+  - kubernetes
+  - nextjs
+  - fastapi
+maintainers:
+  - name: Phase VI Team
+    email: dev@puretasks.com
+home: https://github.com/yourusername/todo-chatbot
+sources:
+  - https://github.com/yourusername/todo-chatbot
+icon: https://example.com/icon.png
