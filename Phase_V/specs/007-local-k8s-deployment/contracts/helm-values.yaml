@@ -1,0 +1,514 @@
+# Helm Values Schema
+
+**Feature**: 007-local-k8s-deployment
+**Date**: 2026-02-01
+**Purpose**: Define Helm chart configuration schema with documentation
+
+---
+
+## values.yaml (Default Configuration)
+
+```yaml
+# Global configuration
+global:
+  # Deployment environment: development, staging, production
+  environment: development
+
+  # Kubernetes namespace for all resources
+  namespace: todo-app
+
+# Backend configuration
+backend:
+  # Container image configuration
+  image:
+    # Image repository (without tag)
+    repository: todo-backend
+
+    # Image tag (use 'latest' for development, semantic version for production)
+    tag: latest
+
+    # Image pull policy: Always, IfNotPresent, Never
+    pullPolicy: IfNotPresent
+
+  # Number of pod replicas
+  # Minimum: 1, Maximum: 3 (for local development)
+  replicas: 1
+
+  # Resource requests and limits
+  resources:
+    requests:
+      # Guaranteed memory allocation
+      memory: "256Mi"
+      # Guaranteed CPU allocation (250m = 0.25 cores)
+      cpu: "250m"
+    limits:
+      # Maximum memory before OOMKill
+      memory: "512Mi"
+      # Maximum CPU throttling threshold
+      cpu: "500m"
+
+  # Service configuration
+  service:
+    # Service type: ClusterIP (internal only)
+    type: ClusterIP
+    # Service port (internal cluster access)
+    port: 8000
+
+  # Health check configuration
+  healthCheck:
+    # Health endpoint path
+    path: /api/health
+    # Startup probe configuration (allows for slow starts)
+    startup:
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      failureThreshold: 6
+      timeoutSeconds: 5
+    # Liveness probe configuration (detects hung processes)
+    liveness:
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 3
+      timeoutSeconds: 5
+    # Readiness probe configuration (controls traffic routing)
+    readiness:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      failureThreshold: 2
+      timeoutSeconds: 3
+
+  # Environment variables (non-sensitive)
+  env:
+    ENVIRONMENT: development
+    LOG_LEVEL: INFO
+    CORS_ORIGINS: "http://localhost:30000"
+    FRONTEND_URL: "http://localhost:30000"
+    MCP_SERVER_NAME: "puretasks-mcp-server"
+    MCP_SERVER_PORT: "8001"
+    RATE_LIMIT_PER_MINUTE: "60"
+    DATABASE_POOL_SIZE: "5"
+    DATABASE_MAX_OVERFLOW: "10"
+    EMAIL_PROVIDER: "console"
+    FROM_EMAIL: "noreply@puretasks.com"
+
+  # Secrets (sensitive data - must be provided)
+  # These values should be overridden in values-dev.yaml or via --set flags
+  secrets:
+    # REQUIRED: Neon PostgreSQL connection string
+    # Format: postgresql://user:password@host:port/database?sslmode=require
+    DATABASE_URL: ""
+
+    # REQUIRED: JWT secret key (minimum 32 characters)
+    JWT_SECRET: ""
+
+    # JWT algorithm (default: HS256)
+    JWT_ALGORITHM: "HS256"
+
+    # JWT expiration in hours (default: 168 = 7 days)
+    JWT_EXPIRATION_HOURS: "168"
+
+    # OPTIONAL: OpenAI API key for AI features
+    OPENAI_API_KEY: ""
+
+    # OPTIONAL: Gemini API key for AI features
+    GEMINI_API_KEY: ""
+
+    # OPTIONAL: Cloudinary configuration for image uploads
+    CLOUDINARY_CLOUD_NAME: ""
+    CLOUDINARY_API_KEY: ""
+    CLOUDINARY_API_SECRET: ""
+
+    # OPTIONAL: Email configuration
+    GMAIL_EMAIL: ""
+    GMAIL_APP_PASSWORD: ""
+    RESEND_API_KEY: ""
+
+# Frontend configuration
+frontend:
+  # Container image configuration
+  image:
+    # Image repository (without tag)
+    repository: todo-frontend
+
+    # Image tag
+    tag: latest
+
+    # Image pull policy
+    pullPolicy: IfNotPresent
+
+  # Number of pod replicas
+  # Minimum: 1, Maximum: 2 (limited by resource requirements)
+  replicas: 1
+
+  # Resource requests and limits
+  resources:
+    requests:
+      # Guaranteed memory allocation
+      memory: "512Mi"
+      # Guaranteed CPU allocation
+      cpu: "500m"
+    limits:
+      # Maximum memory before OOMKill
+      memory: "1Gi"
+      # Maximum CPU throttling threshold
+      cpu: "1000m"
+
+  # Service configuration
+  service:
+    # Service type: NodePort (external access)
+    type: NodePort
+    # Service port (internal cluster access)
+    port: 3000
+    # NodePort (external access on Minikube)
+    # Range: 30000-32767
+    nodePort: 30000
+
+  # Health check configuration
+  healthCheck:
+    # Health endpoint path
+    path: /api/health
+    # Startup probe configuration
+    startup:
+      initialDelaySeconds: 0
+      periodSeconds: 5
+      failureThreshold: 6
+      timeoutSeconds: 3
+    # Liveness probe configuration
+    liveness:
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      failureThreshold: 3
+      timeoutSeconds: 3
+    # Readiness probe configuration
+    readiness:
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      failureThreshold: 2
+      timeoutSeconds: 3
+
+  # Environment variables
+  env:
+    # Backend API URL (uses Kubernetes DNS)
+    NEXT_PUBLIC_API_URL: "http://backend-service:8000"
+    # Node environment
+    NODE_ENV: "production"
+
+# Persistent storage configuration
+persistence:
+  # Enable persistent storage for backend uploads
+  # Set to true to persist uploads across pod restarts
+  enabled: false
+
+  # Storage class name
+  # Use "manual" for hostPath, "standard" for dynamic provisioning
+  storageClass: "manual"
+
+  # Storage size
+  size: "5Gi"
+
+  # Access mode: ReadWriteOnce, ReadWriteMany, ReadOnlyMany
+  accessMode: "ReadWriteOnce"
+
+  # Host path for Minikube (only used if storageClass is "manual")
+  hostPath: "/mnt/data/uploads"
+
+# Rolling update strategy
+updateStrategy:
+  # Strategy type: RollingUpdate or Recreate
+  type: RollingUpdate
+
+  # Rolling update configuration
+  rollingUpdate:
+    # Maximum number of pods above desired count during update
+    maxSurge: 1
+    # Maximum number of pods unavailable during update
+    maxUnavailable: 0
+
+# Pod security context (optional, for production)
+securityContext:
+  # Run as non-root user
+  runAsNonRoot: false
+  # User ID (1000 = default non-root user)
+  runAsUser: 1000
+  # File system group
+  fsGroup: 1000
+
+# Node selector (optional, for multi-node clusters)
+nodeSelector: {}
+  # Example: kubernetes.io/hostname: minikube
+
+# Tolerations (optional, for tainted nodes)
+tolerations: []
+  # Example:
+  # - key: "key1"
+  #   operator: "Equal"
+  #   value: "value1"
+  #   effect: "NoSchedule"
+
+# Affinity rules (optional, for pod placement)
+affinity: {}
+  # Example: prefer pods on different nodes
+  # podAntiAffinity:
+  #   preferredDuringSchedulingIgnoredDuringExecution:
+  #   - weight: 100
+  #     podAffinityTerm:
+  #       labelSelector:
+  #         matchExpressions:
+  #         - key: app
+  #           operator: In
+  #           values:
+  #           - backend
+  #       topologyKey: kubernetes.io/hostname
+```
+
+---
+
+## values-dev.yaml (Development Overrides)
+
+```yaml
+# Development-specific overrides
+# Usage: helm install todo-chatbot ./helm/todo-chatbot -f values-dev.yaml
+
+global:
+  environment: development
+
+backend:
+  # Use local images (no pull from registry)
+  image:
+    pullPolicy: IfNotPresent
+
+  # Single replica for development
+  replicas: 1
+
+  # Development environment variables
+  env:
+    LOG_LEVEL: DEBUG
+    ENVIRONMENT: development
+
+  # Development secrets (override these with your actual values)
+  secrets:
+    DATABASE_URL: "postgresql://user:pass@host/db?sslmode=require"
+    JWT_SECRET: "dev-secret-key-minimum-32-characters-long"
+    GEMINI_API_KEY: "your-gemini-api-key"
+
+frontend:
+  # Use local images
+  image:
+    pullPolicy: IfNotPresent
+
+  # Single replica for development
+  replicas: 1
+
+  # Development API URL
+  env:
+    NEXT_PUBLIC_API_URL: "http://backend-service:8000"
+
+# Disable persistence for faster development
+persistence:
+  enabled: false
+```
+
+---
+
+## values-staging.yaml (Staging Overrides)
+
+```yaml
+# Staging-specific overrides
+# Usage: helm install todo-chatbot ./helm/todo-chatbot -f values-staging.yaml
+
+global:
+  environment: staging
+
+backend:
+  # Pull images from registry
+  image:
+    pullPolicy: Always
+    tag: "1.0.0-staging"
+
+  # Multiple replicas for testing
+  replicas: 2
+
+  # Staging environment variables
+  env:
+    LOG_LEVEL: INFO
+    ENVIRONMENT: staging
+    CORS_ORIGINS: "https://staging.example.com"
+    FRONTEND_URL: "https://staging.example.com"
+
+frontend:
+  image:
+    pullPolicy: Always
+    tag: "1.0.0-staging"
+
+  replicas: 2
+
+  env:
+    NEXT_PUBLIC_API_URL: "https://api-staging.example.com"
+
+# Enable persistence for staging
+persistence:
+  enabled: true
+  storageClass: "standard"
+```
+
+---
+
+## values-production.yaml (Production Overrides)
+
+```yaml
+# Production-specific overrides
+# Usage: helm install todo-chatbot ./helm/todo-chatbot -f values-production.yaml
+
+global:
+  environment: production
+
+backend:
+  # Always pull latest production images
+  image:
+    pullPolicy: Always
+    tag: "1.0.0"
+
+  # Multiple replicas for high availability
+  replicas: 3
+
+  # Production resource limits (higher)
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+
+  # Production environment variables
+  env:
+    LOG_LEVEL: WARNING
+    ENVIRONMENT: production
+    CORS_ORIGINS: "https://app.example.com"
+    FRONTEND_URL: "https://app.example.com"
+    RATE_LIMIT_PER_MINUTE: "100"
+
+frontend:
+  image:
+    pullPolicy: Always
+    tag: "1.0.0"
+
+  replicas: 2
+
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "1000m"
+    limits:
+      memory: "2Gi"
+      cpu: "2000m"
+
+  env:
+    NEXT_PUBLIC_API_URL: "https://api.example.com"
+
+# Enable persistence for production
+persistence:
+  enabled: true
+  storageClass: "standard"
+  size: "20Gi"
+
+# Production security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+```
+
+---
+
+## Usage Examples
+
+### Install with default values
+```bash
+helm install todo-chatbot ./helm/todo-chatbot
+```
+
+### Install with development overrides
+```bash
+helm install todo-chatbot ./helm/todo-chatbot -f values-dev.yaml
+```
+
+### Install with custom values via --set
+```bash
+helm install todo-chatbot ./helm/todo-chatbot /
+  --set backend.replicas=2 /
+  --set frontend.replicas=2 /
+  --set persistence.enabled=true
+```
+
+### Install with secrets from command line
+```bash
+helm install todo-chatbot ./helm/todo-chatbot /
+  -f values-dev.yaml /
+  --set backend.secrets.DATABASE_URL="postgresql://..." /
+  --set backend.secrets.JWT_SECRET="your-secret-key"
+```
+
+### Upgrade existing deployment
+```bash
+helm upgrade todo-chatbot ./helm/todo-chatbot -f values-dev.yaml
+```
+
+### Rollback to previous version
+```bash
+helm rollback todo-chatbot
+```
+
+### Uninstall
+```bash
+helm uninstall todo-chatbot
+```
+
+---
+
+## Required Values
+
+These values **MUST** be provided before deployment:
+
+1. **backend.secrets.DATABASE_URL**
+   - Neon PostgreSQL connection string
+   - Format: `postgresql://user:password@host:port/database?sslmode=require`
+   - Example: `postgresql://neondb_owner:pass@ep-host.aws.neon.tech/neondb?sslmode=require`
+
+2. **backend.secrets.JWT_SECRET**
+   - Minimum 32 characters
+   - Use strong random string
+   - Generate: `openssl rand -base64 32`
+
+3. **backend.secrets.GEMINI_API_KEY** (if using AI features)
+   - Get from Google AI Studio
+   - Required for chat functionality
+
+---
+
+## Optional Values
+
+These values can be customized but have sensible defaults:
+
+- **Replicas**: Adjust based on load requirements
+- **Resources**: Tune based on actual usage patterns
+- **NodePort**: Change if 30000 conflicts with other services
+- **Persistence**: Enable for production, disable for development
+- **Health Check Timings**: Adjust based on startup performance
+
+---
+
+## Validation
+
+Before deploying, validate your values:
+
+```bash
+# Lint the chart
+helm lint ./helm/todo-chatbot -f values-dev.yaml
+
+# Dry-run to see generated manifests
+helm install todo-chatbot ./helm/todo-chatbot -f values-dev.yaml --dry-run --debug
+
+# Template to see final YAML
+helm template todo-chatbot ./helm/todo-chatbot -f values-dev.yaml
+```

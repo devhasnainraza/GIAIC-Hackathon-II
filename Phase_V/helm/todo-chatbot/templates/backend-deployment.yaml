@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "todo-chatbot.backend.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  strategy:
+    type: {{ .Values.updateStrategy.type }}
+    {{- if eq .Values.updateStrategy.type "RollingUpdate" }}
+    rollingUpdate:
+      maxSurge: {{ .Values.updateStrategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.updateStrategy.rollingUpdate.maxUnavailable }}
+    {{- end }}
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        component: api
+        tier: backend
+    spec:
+      containers:
+      - name: backend
+        image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+        imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: 8000
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: todo-app-config
+        - secretRef:
+            name: todo-app-secrets
+        resources:
+          {{- toYaml .Values.backend.resources | nindent 10 }}
+        startupProbe:
+          httpGet:
+            path: {{ .Values.backend.healthCheck.path }}
+            port: 8000
+          initialDelaySeconds: {{ .Values.backend.healthCheck.startup.initialDelaySeconds }}
+          periodSeconds: {{ .Values.backend.healthCheck.startup.periodSeconds }}
+          failureThreshold: {{ .Values.backend.healthCheck.startup.failureThreshold }}
+          timeoutSeconds: {{ .Values.backend.healthCheck.startup.timeoutSeconds }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.backend.healthCheck.path }}
+            port: 8000
+          initialDelaySeconds: {{ .Values.backend.healthCheck.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.backend.healthCheck.liveness.periodSeconds }}
+          failureThreshold: {{ .Values.backend.healthCheck.liveness.failureThreshold }}
+          timeoutSeconds: {{ .Values.backend.healthCheck.liveness.timeoutSeconds }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.backend.healthCheck.path }}
+            port: 8000
+          initialDelaySeconds: {{ .Values.backend.healthCheck.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.backend.healthCheck.readiness.periodSeconds }}
+          failureThreshold: {{ .Values.backend.healthCheck.readiness.failureThreshold }}
+          timeoutSeconds: {{ .Values.backend.healthCheck.readiness.timeoutSeconds }}
+        volumeMounts:
+        - name: uploads
+          mountPath: /app/uploads
+      volumes:
+      - name: uploads
+        {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: backend-uploads-pvc
+        {{- else }}
+        emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

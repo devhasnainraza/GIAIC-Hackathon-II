@@ -1,0 +1,141 @@
+# Cloud Deployment Helm Values
+# This file contains cloud-specific overrides for the base values.yaml
+# Usage: helm install todo-chatbot ./helm/todo-chatbot -f specs/008-cloud-deployment/contracts/helm-values-cloud.yaml
+
+# Global configuration
+global:
+  environment: production
+  namespace: todo-app
+
+# Backend configuration
+backend:
+  image:
+    repository: <DOCKERHUB_USERNAME>/todo-backend
+    tag: latest
+    pullPolicy: Always  # Always pull latest for cloud deployment
+
+  replicas: 2  # Start with 2 replicas for high availability
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+  service:
+    type: ClusterIP
+    port: 8000
+
+  healthCheck:
+    path: /api/health
+    startup:
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 20
+      timeoutSeconds: 10
+    liveness:
+      initialDelaySeconds: 60
+      periodSeconds: 15
+      failureThreshold: 5
+      timeoutSeconds: 10
+    readiness:
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 5
+      timeoutSeconds: 10
+
+  env:
+    ENVIRONMENT: production
+    LOG_LEVEL: INFO
+    CORS_ORIGINS: "http://<EXTERNAL_IP>"  # Update after LoadBalancer IP assigned
+    FRONTEND_URL: "http://<EXTERNAL_IP>"
+    MCP_SERVER_NAME: "puretasks-mcp-server"
+    MCP_SERVER_PORT: "8001"
+    RATE_LIMIT_PER_MINUTE: "60"
+    DATABASE_POOL_SIZE: "5"
+    DATABASE_MAX_OVERFLOW: "10"
+    EMAIL_PROVIDER: "gmail"
+    FROM_EMAIL: "noreply@puretasks.com"
+
+  # Secrets are loaded from Kubernetes Secret (created manually)
+  # DO NOT include actual secret values here
+  secrets:
+    # These will be loaded from: kubectl create secret generic todo-app-secrets
+    DATABASE_URL: ""  # From Kubernetes Secret
+    JWT_SECRET: ""  # From Kubernetes Secret
+    JWT_ALGORITHM: "HS256"
+    JWT_EXPIRATION_HOURS: "168"
+    OPENAI_API_KEY: ""  # From Kubernetes Secret
+    GEMINI_API_KEY: ""  # From Kubernetes Secret
+    CLOUDINARY_CLOUD_NAME: ""  # From Kubernetes Secret
+    CLOUDINARY_API_KEY: ""  # From Kubernetes Secret
+    CLOUDINARY_API_SECRET: ""  # From Kubernetes Secret
+    GMAIL_EMAIL: ""  # From Kubernetes Secret
+    GMAIL_APP_PASSWORD: ""  # From Kubernetes Secret
+    RESEND_API_KEY: ""  # From Kubernetes Secret
+
+# Frontend configuration
+frontend:
+  image:
+    repository: <DOCKERHUB_USERNAME>/todo-frontend
+    tag: latest
+    pullPolicy: Always
+
+  replicas: 1  # Single replica sufficient for frontend
+
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+
+  service:
+    type: LoadBalancer  # Expose frontend publicly
+    port: 80
+    targetPort: 3000
+
+  env:
+    BACKEND_URL: "http://backend-service:8000"  # Internal cluster DNS
+    NODE_ENV: "production"
+
+# Persistence (optional - not needed for stateless app)
+persistence:
+  enabled: false
+
+# Update strategy
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+# Node selector (optional - for specific node pools)
+nodeSelector: {}
+
+# Tolerations (optional - for node taints)
+tolerations: []
+
+# Affinity (optional - for pod placement)
+affinity: {}
+
+# Instructions:
+# 1. Replace <DOCKERHUB_USERNAME> with your Docker Hub username
+# 2. Replace <EXTERNAL_IP> with LoadBalancer IP after deployment
+# 3. Create Kubernetes Secret with actual secret values:
+#    kubectl create secret generic todo-app-secrets /
+#      --from-literal=DATABASE_URL='postgresql://...' /
+#      --from-literal=JWT_SECRET='...' /
+#      --from-literal=GEMINI_API_KEY='...' /
+#      --from-literal=OPENAI_API_KEY='...' /
+#      --from-literal=CLOUDINARY_CLOUD_NAME='...' /
+#      --from-literal=CLOUDINARY_API_KEY='...' /
+#      --from-literal=CLOUDINARY_API_SECRET='...' /
+#      --from-literal=GMAIL_EMAIL='...' /
+#      --from-literal=GMAIL_APP_PASSWORD='...' /
+#      --from-literal=RESEND_API_KEY='...' /
+#      -n todo-app
+# 4. Deploy with: helm install todo-chatbot ./helm/todo-chatbot -f this-file.yaml

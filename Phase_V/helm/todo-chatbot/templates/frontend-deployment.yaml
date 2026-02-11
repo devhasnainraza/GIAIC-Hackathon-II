@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "todo-chatbot.frontend.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  strategy:
+    type: {{ .Values.updateStrategy.type }}
+    {{- if eq .Values.updateStrategy.type "RollingUpdate" }}
+    rollingUpdate:
+      maxSurge: {{ .Values.updateStrategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.updateStrategy.rollingUpdate.maxUnavailable }}
+    {{- end }}
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        component: ui
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+        imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+        env:
+        - name: NEXT_PUBLIC_API_URL
+          value: {{ .Values.frontend.env.NEXT_PUBLIC_API_URL | quote }}
+        - name: NODE_ENV
+          value: {{ .Values.frontend.env.NODE_ENV | quote }}
+        resources:
+          {{- toYaml .Values.frontend.resources | nindent 10 }}
+        startupProbe:
+          httpGet:
+            path: {{ .Values.frontend.healthCheck.path }}
+            port: 3000
+          initialDelaySeconds: {{ .Values.frontend.healthCheck.startup.initialDelaySeconds }}
+          periodSeconds: {{ .Values.frontend.healthCheck.startup.periodSeconds }}
+          failureThreshold: {{ .Values.frontend.healthCheck.startup.failureThreshold }}
+          timeoutSeconds: {{ .Values.frontend.healthCheck.startup.timeoutSeconds }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.frontend.healthCheck.path }}
+            port: 3000
+          initialDelaySeconds: {{ .Values.frontend.healthCheck.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.frontend.healthCheck.liveness.periodSeconds }}
+          failureThreshold: {{ .Values.frontend.healthCheck.liveness.failureThreshold }}
+          timeoutSeconds: {{ .Values.frontend.healthCheck.liveness.timeoutSeconds }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.frontend.healthCheck.path }}
+            port: 3000
+          initialDelaySeconds: {{ .Values.frontend.healthCheck.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.frontend.healthCheck.readiness.periodSeconds }}
+          failureThreshold: {{ .Values.frontend.healthCheck.readiness.failureThreshold }}
+          timeoutSeconds: {{ .Values.frontend.healthCheck.readiness.timeoutSeconds }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

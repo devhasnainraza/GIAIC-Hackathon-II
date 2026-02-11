@@ -1,0 +1,30 @@
+# Staging-specific overrides
+global:
+  environment: staging
+
+backend:
+  image:
+    pullPolicy: Always
+    tag: "1.0.0-staging"
+
+  replicas: 2
+
+  env:
+    LOG_LEVEL: INFO
+    ENVIRONMENT: staging
+    CORS_ORIGINS: "https://staging.example.com"
+    FRONTEND_URL: "https://staging.example.com"
+
+frontend:
+  image:
+    pullPolicy: Always
+    tag: "1.0.0-staging"
+
+  replicas: 2
+
+  env:
+    NEXT_PUBLIC_API_URL: "https://api-staging.example.com"
+
+persistence:
+  enabled: true
+  storageClass: "standard"

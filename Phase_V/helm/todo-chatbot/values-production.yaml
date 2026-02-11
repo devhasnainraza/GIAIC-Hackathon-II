@@ -1,0 +1,53 @@
+# Production-specific overrides
+global:
+  environment: production
+
+backend:
+  image:
+    pullPolicy: Always
+    tag: "1.0.0"
+
+  replicas: 3
+
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+
+  env:
+    LOG_LEVEL: WARNING
+    ENVIRONMENT: production
+    CORS_ORIGINS: "https://app.example.com"
+    FRONTEND_URL: "https://app.example.com"
+    RATE_LIMIT_PER_MINUTE: "100"
+
+frontend:
+  image:
+    pullPolicy: Always
+    tag: "1.0.0"
+
+  replicas: 2
+
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "1000m"
+    limits:
+      memory: "2Gi"
+      cpu: "2000m"
+
+  env:
+    NEXT_PUBLIC_API_URL: "https://api.example.com"
+
+persistence:
+  enabled: true
+  storageClass: "standard"
+  size: "20Gi"
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000

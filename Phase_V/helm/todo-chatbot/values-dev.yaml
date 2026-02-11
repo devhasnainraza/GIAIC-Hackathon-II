@@ -1,0 +1,31 @@
+# Development-specific overrides
+global:
+  environment: development
+
+backend:
+  image:
+    pullPolicy: IfNotPresent
+
+  replicas: 1
+
+  env:
+    LOG_LEVEL: DEBUG
+    ENVIRONMENT: development
+    CORS_ORIGINS: "http://localhost:3000,http://localhost:8000"
+
+  secrets:
+    DATABASE_URL: "postgresql://neondb_owner:npg_lW83steFXOxp@ep-tiny-shadow-ahq6dtsj-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+    JWT_SECRET: "q-_ohHZKZBbF4GkRwFZRxIpi89nyQU6DSF6B31wwpWE"
+    GEMINI_API_KEY: "AIzaSyAXI8L6fNo1jrwENBAWWuJpJiVKTt-M9j8"
+
+frontend:
+  image:
+    pullPolicy: IfNotPresent
+
+  replicas: 1
+
+  env:
+    NEXT_PUBLIC_API_URL: "http://localhost:8000"
+
+persistence:
+  enabled: false

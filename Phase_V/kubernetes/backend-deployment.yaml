@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: todo-app
+  labels:
+    app: backend
+    component: api
+    tier: backend
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        component: api
+        tier: backend
+    spec:
+      containers:
+      - name: backend
+        image: devhasnainraza/todo-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8000
+          protocol: TCP
+
+        # Environment Variables from ConfigMap
+        envFrom:
+        - configMapRef:
+            name: todo-app-config
+        - secretRef:
+            name: todo-app-secrets
+
+        # Resource Limits
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+
+        # Startup Probe (allows 300s for cold start + DB init + MCP server)
+        startupProbe:
+          httpGet:
+            path: /api/health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 30
+          timeoutSeconds: 5
+
+        # Liveness Probe (detects hung processes)
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 3
+          timeoutSeconds: 5
+
+        # Readiness Probe (controls traffic routing)
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 2
+          timeoutSeconds: 3
+
+        # Volume Mounts
+        volumeMounts:
+        - name: uploads
+          mountPath: /app/uploads
+
+      # Volumes
+      volumes:
+      - name: uploads
+        emptyDir: {}
