@@ -379,6 +379,158 @@ export const apiClient = {
       });
     },
   },
+
+  /**
+   * Recurring Tasks methods
+   */
+  recurringTasks: {
+    /**
+     * List all recurring tasks for the authenticated user
+     * @returns Array of recurring tasks
+     */
+    async list(): Promise<any[]> {
+      return await request<any[]>('/api/recurring-tasks');
+    },
+
+    /**
+     * Get a single recurring task by ID
+     * @param id - Recurring task ID
+     * @returns Recurring task object
+     */
+    async get(id: number): Promise<any> {
+      return await request<any>(`/api/recurring-tasks/${id}`);
+    },
+
+    /**
+     * Create a new recurring task
+     * @param data - Recurring task creation data
+     * @returns Created recurring task
+     */
+    async create(data: any): Promise<any> {
+      return await request<any>('/api/recurring-tasks', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    /**
+     * Update an existing recurring task
+     * @param id - Recurring task ID
+     * @param data - Recurring task update data
+     * @returns Updated recurring task
+     */
+    async update(id: number, data: any): Promise<any> {
+      return await request<any>(`/api/recurring-tasks/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      });
+    },
+
+    /**
+     * Delete a recurring task
+     * @param id - Recurring task ID
+     */
+    async delete(id: number): Promise<void> {
+      await request<void>(`/api/recurring-tasks/${id}`, {
+        method: 'DELETE',
+      });
+    },
+
+    /**
+     * Pause a recurring task
+     * @param id - Recurring task ID
+     * @returns Updated recurring task
+     */
+    async pause(id: number): Promise<any> {
+      return await request<any>(`/api/recurring-tasks/${id}/pause`, {
+        method: 'POST',
+      });
+    },
+
+    /**
+     * Resume a recurring task
+     * @param id - Recurring task ID
+     * @returns Updated recurring task
+     */
+    async resume(id: number): Promise<any> {
+      return await request<any>(`/api/recurring-tasks/${id}/resume`, {
+        method: 'POST',
+      });
+    },
+
+    /**
+     * Get next occurrence of a recurring task
+     * @param id - Recurring task ID
+     * @returns Next occurrence date
+     */
+    async getNextOccurrence(id: number): Promise<any> {
+      return await request<any>(`/api/recurring-tasks/${id}/next-occurrence`);
+    },
+  },
+
+  /**
+   * Reminders methods
+   */
+  reminders: {
+    /**
+     * List all reminders for the authenticated user
+     * @returns Array of reminders
+     */
+    async list(): Promise<any[]> {
+      return await request<any[]>('/api/reminders');
+    },
+
+    /**
+     * Get upcoming reminders
+     * @returns Array of upcoming reminders
+     */
+    async getUpcoming(): Promise<any[]> {
+      return await request<any[]>('/api/reminders/upcoming');
+    },
+
+    /**
+     * Create a new reminder
+     * @param data - Reminder creation data
+     * @returns Created reminder
+     */
+    async create(data: any): Promise<any> {
+      return await request<any>('/api/reminders', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    /**
+     * Dismiss a reminder
+     * @param id - Reminder ID
+     * @returns Updated reminder
+     */
+    async dismiss(id: number): Promise<any> {
+      return await request<any>(`/api/reminders/${id}/dismiss`, {
+        method: 'PATCH',
+      });
+    },
+
+    /**
+     * Get user reminder preferences
+     * @returns User reminder preferences
+     */
+    async getPreferences(): Promise<any> {
+      return await request<any>('/api/reminders/preferences');
+    },
+
+    /**
+     * Update user reminder preferences
+     * @param preferences - Reminder preferences data
+     * @returns Updated preferences
+     */
+    async updatePreferences(preferences: any): Promise<any> {
+      return await request<any>('/api/reminders/preferences', {
+        method: 'PATCH',
+        body: JSON.stringify(preferences),
+      });
+    },
+  },
 };
 
 /**

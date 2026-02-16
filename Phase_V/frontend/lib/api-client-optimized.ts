@@ -534,6 +534,134 @@ export const apiClient = {
       return this.update(id, { is_complete: isComplete });
     },
   },
+
+  /**
+   * Recurring Tasks methods
+   */
+  recurringTasks: {
+    /**
+     * List all recurring tasks for the authenticated user
+     */
+    async list(): Promise<any[]> {
+      return request<any[]>('/api/recurring-tasks');
+    },
+
+    /**
+     * Get a single recurring task by ID
+     */
+    async get(id: number): Promise<any> {
+      return request<any>(`/api/recurring-tasks/${id}`);
+    },
+
+    /**
+     * Create a new recurring task
+     */
+    async create(data: any): Promise<any> {
+      return request<any>('/api/recurring-tasks', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    /**
+     * Update an existing recurring task
+     */
+    async update(id: number, data: any): Promise<any> {
+      return request<any>(`/api/recurring-tasks/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      });
+    },
+
+    /**
+     * Delete a recurring task
+     */
+    async delete(id: number): Promise<void> {
+      await request<void>(`/api/recurring-tasks/${id}`, {
+        method: 'DELETE',
+      });
+    },
+
+    /**
+     * Pause a recurring task
+     */
+    async pause(id: number): Promise<any> {
+      return request<any>(`/api/recurring-tasks/${id}/pause`, {
+        method: 'POST',
+      });
+    },
+
+    /**
+     * Resume a recurring task
+     */
+    async resume(id: number): Promise<any> {
+      return request<any>(`/api/recurring-tasks/${id}/resume`, {
+        method: 'POST',
+      });
+    },
+
+    /**
+     * Get next occurrence of a recurring task
+     */
+    async getNextOccurrence(id: number): Promise<any> {
+      return request<any>(`/api/recurring-tasks/${id}/next-occurrence`);
+    },
+  },
+
+  /**
+   * Reminders methods
+   */
+  reminders: {
+    /**
+     * List all reminders for the authenticated user
+     */
+    async list(): Promise<any[]> {
+      return request<any[]>('/api/reminders');
+    },
+
+    /**
+     * Get upcoming reminders
+     */
+    async getUpcoming(): Promise<any[]> {
+      return request<any[]>('/api/reminders/upcoming');
+    },
+
+    /**
+     * Create a new reminder
+     */
+    async create(data: any): Promise<any> {
+      return request<any>('/api/reminders', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    /**
+     * Dismiss a reminder
+     */
+    async dismiss(id: number): Promise<any> {
+      return request<any>(`/api/reminders/${id}/dismiss`, {
+        method: 'POST',
+      });
+    },
+
+    /**
+     * Get user reminder preferences
+     */
+    async getPreferences(): Promise<any> {
+      return request<any>('/api/reminders/preferences');
+    },
+
+    /**
+     * Update user reminder preferences
+     */
+    async updatePreferences(preferences: any): Promise<any> {
+      return request<any>('/api/reminders/preferences', {
+        method: 'PATCH',
+        body: JSON.stringify(preferences),
+      });
+    },
+  },
 };
 
 /**

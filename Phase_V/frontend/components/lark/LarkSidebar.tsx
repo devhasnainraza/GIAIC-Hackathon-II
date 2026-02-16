@@ -13,7 +13,9 @@ import {
   User,
   X,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Repeat,
+  Bell
 } from 'lucide-react';
 import { getUser } from '@/lib/auth';
 
@@ -58,6 +60,8 @@ export default function LarkSidebar({
   const navigationItems = [
     { icon: Home, label: 'Dashboard', href: '/dashboard' },
     { icon: CheckSquare, label: 'Tasks', href: '/tasks' },
+    { icon: Repeat, label: 'Recurring Tasks', href: '/recurring-tasks' },
+    { icon: Bell, label: 'Reminders', href: '/reminders' },
     { icon: Calendar, label: 'Calendar', href: '/calendar' },
     { icon: BarChart3, label: 'Analytics', href: '/analytics' },
   ];
@@ -77,7 +81,7 @@ export default function LarkSidebar({
   return (
     <>
       <aside
-        className={`fixed top-0 left-0 h-full bg-white text-slate-900 transition-all duration-300 shadow-lg border-r border-slate-200 ${
+        className={`fixed top-0 left-0 h-full bg-white text-slate-900 transition-all duration-300 shadow-lg border-r border-slate-200 overflow-visible  ${
           isMobile ? 'z-50' : 'z-10'
         } ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
@@ -151,7 +155,7 @@ export default function LarkSidebar({
           </div>
 
           {/* Navigation Items - Enhanced */}
-          <nav className="flex-1 overflow-y-auto py-4 px-2 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
+          <nav className="flex-1 overflow-y-auto overflow-x-visible py-4 px-2 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
             <div className="space-y-1">
               {navigationItems.map((item) => {
                 const Icon = item.icon;

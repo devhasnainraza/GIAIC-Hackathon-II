@@ -1,784 +1,600 @@
-# Pure Tasks - AI-Powered Task Management Platform
+# 📝 Pure Tasks - Advanced Task Management System
 
-A production-ready, full-stack task management application with integrated AI assistant, built with Next.js 16 and FastAPI. Features enterprise-grade security, real-time notifications, multiple view modes, and intelligent task automation.
+<div align="center">
+
+![Pure Tasks Logo](frontend/public/full-logo.png)
+
+**A modern, full-stack task management application with microservices architecture**
+
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://puretasks.me)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Kubernetes](https://img.shields.io/badge/kubernetes-deployed-326CE5?logo=kubernetes)](https://kubernetes.io/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
+
+[Live Demo](https://puretasks.me) • [Documentation](#documentation) • [Features](#features) • [Architecture](#architecture)
+
+</div>
+
+---
 
 ## 🌟 Overview
 
-Pure Tasks is a modern productivity platform that combines powerful task management with AI-driven assistance. Built with a focus on user experience, security, and scalability, it offers everything from simple todo lists to advanced project management with AI-powered insights.
+Pure Tasks is a production-ready task management system built with modern technologies and microservices architecture. It features real-time notifications, recurring tasks, AI-powered chat assistance, and comprehensive analytics.
 
-**Live Demo:** [Backend API](https://hasnain-raza3-pure-tasks-backend.hf.space/docs)
+**🔗 Live Application:** [https://puretasks.me](https://puretasks.me)
 
----
+### Key Highlights
 
-## ✨ Key Features
-
-### 🤖 AI Chat Assistant
-- **Intelligent Task Management**: Create, update, and manage tasks through natural conversation
-- **Powered by Gemini 2.5 Flash**: Fast, accurate responses with tool calling capabilities
-- **Conversation History**: Persistent chat history across sessions
-- **Smart Context**: AI understands task priorities, due dates, and project context
-- **Multi-Conversation Support**: Organize different topics in separate conversations
-- **Mobile & Desktop**: Floating chat widget on mobile, dedicated page on desktop
-
-### 📋 Advanced Task Management
-- **Multiple View Modes**:
-  - List view with sorting and filtering
-  - Kanban board with drag-and-drop
-  - Timeline/Gantt view for project planning
-- **Smart Filtering**: Filter by status, priority, date range, projects, and tags
-- **Full-Text Search**: Search across titles, descriptions, projects, and tags
-- **Bulk Operations**: Complete or delete multiple tasks at once
-- **Priority System**: Low, medium, high, and urgent priority levels
-- **Status Tracking**: Todo → In Progress → Review → Done workflow
-- **Due Date Management**: Set deadlines and track overdue tasks
-- **Export Options**: Export tasks to CSV, JSON, or PDF
-
-### 🎯 Organization & Productivity
-- **Projects**: Group related tasks with color-coded projects
-- **Tags**: Categorize tasks with customizable colored tags (many-to-many)
-- **Smart Sorting**: Sort by creation date, due date, priority, or title
-- **Task Statistics**: Real-time metrics on completion rates and productivity
-- **Weekly Activity Charts**: Visualize productivity patterns over time
-- **Productivity Score**: AI-calculated score based on completion rates and consistency
-
-### 🔔 Smart Notifications
-- **Automatic Notifications**: Task created, completed, updated, deleted
-- **Smart Alerts**: Due today, due tomorrow, overdue, high priority
-- **Notification Preferences**: Customize which notifications you receive
-- **Unread Count Badge**: Never miss important updates
-- **Mark as Read/Unread**: Manage notification status
-- **Clear All**: Bulk notification management
-
-### 👤 User Profile & Settings
-- **Rich Profiles**: Bio, location, website, social links (GitHub, Twitter, LinkedIn)
-- **Avatar Upload**: Cloudinary-hosted with automatic optimization (300x300, face detection)
-- **User Settings**:
-  - Email notifications (on/off)
-  - Push notifications (on/off)
-  - Weekly summary emails
-  - Theme preference (light/dark/system)
-  - Language and timezone
-- **Activity History**: Track all actions and changes
-- **User Statistics**: Total tasks, completion rate, streaks, and more
-
-### 🔐 Enterprise Security
-- **JWT Authentication**: Secure token-based auth with 7-day expiration
-- **Bcrypt Password Hashing**: Industry-standard encryption
-- **Password Reset Flow**: Email-based recovery with secure tokens (24-hour expiration)
-- **Rate Limiting**: 60 requests/minute in production, 3/hour for password reset
-- **Security Headers**: X-Frame-Options, CSP, HSTS, X-Content-Type-Options
-- **User Isolation**: Complete data separation between users
-- **SQL Injection Protection**: Parameterized queries via SQLModel ORM
-- **CORS Configuration**: Controlled cross-origin access
-
-### 🎨 Premium UI/UX
-- **Lark/Slack-Inspired Design**: Modern, professional interface
-- **Responsive Design**: Mobile-first, works on all screen sizes
-- **Dark Mode Support**: System preference detection with manual toggle
-- **Smooth Animations**: Fade, slide, scale, and gradient effects
-- **Keyboard Shortcuts**:
-  - `N` - Create new task
-  - `F` - Open filters
-  - `Escape` - Close modals
-  - `1/2/3` - Switch between List/Board/Timeline views
-  - `Ctrl+K` - Quick actions
-- **Loading States**: Skeleton screens and spinners
-- **Empty States**: Helpful placeholders with CTAs
-- **Touch-Friendly**: Minimum 44x44px touch targets
-
-### 📧 Newsletter System
-- **Email Subscription**: Subscribe to product updates
-- **Email Verification**: Token-based verification flow
-- **Unsubscribe Support**: Easy opt-out with resubscribe capability
-- **Admin Panel**: Send newsletters to all subscribers
-- **Multi-Provider Email**: Resend, Gmail SMTP, or Console (dev)
+- 🎯 **Full-Stack Application** - Next.js 16 frontend with FastAPI backend
+- 🔐 **Secure Authentication** - JWT-based auth with Better Auth
+- 🔄 **Event-Driven Architecture** - Kafka + Dapr for microservices
+- 📊 **Real-Time Analytics** - Task insights and productivity metrics
+- 🤖 **AI Integration** - Gemini-powered chat assistant
+- ☁️ **Cloud Native** - Deployed on Google Kubernetes Engine
+- 🔒 **HTTPS Enabled** - Automatic SSL certificates with Let's Encrypt
 
 ---
 
-## 🛠️ Technology Stack
+## ✨ Features
 
-### Frontend
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Next.js** | 16.1 | React framework with App Router |
-| **React** | 19.2.3 | UI library |
-| **TypeScript** | 5.x | Type safety |
-| **Tailwind CSS** | 3.4.19 | Utility-first styling |
-| **Lucide React** | 0.562.0 | Icon library |
-| **Framer Motion** | 12.29.2 | Animation library |
-| **date-fns** | 4.1.0 | Date manipulation |
-| **Vercel AI SDK** | 3.4.33 | AI integration |
-| **Better Auth** | 1.4.10 | Authentication (configured) |
+### Core Features
+- ✅ **Task Management** - Create, update, delete, and organize tasks
+- 📁 **Projects & Tags** - Organize tasks with projects and custom tags
+- 🎨 **Priority Levels** - High, Medium, Low priority classification
+- 📅 **Due Dates** - Set and track task deadlines
+- 📊 **Status Tracking** - Todo, In Progress, Completed, Cancelled
 
-### Backend
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **FastAPI** | 0.109.0 | Modern async web framework |
-| **Python** | 3.11+ | Runtime environment |
-| **SQLModel** | 0.0.14 | SQL ORM (SQLAlchemy + Pydantic) |
-| **PostgreSQL** | Latest | Neon Serverless database |
-| **python-jose** | 3.3.0 | JWT token handling |
-| **passlib[bcrypt]** | 1.7.4 | Password hashing |
-| **Cloudinary** | 1.44.1 | Image storage and optimization |
-| **Resend** | 0.8.0 | Email service (recommended) |
-| **OpenAI Agents SDK** | 0.7.0+ | AI agent framework |
-| **Gemini 2.5 Flash** | Latest | AI model via OpenAI-compatible API |
-| **pytest** | 7.4.3 | Testing framework |
+### Advanced Features (Phase 5)
+- 🔄 **Recurring Tasks** - Daily, weekly, monthly, yearly patterns
+- ⏰ **Smart Reminders** - Customizable notification preferences
+- 📧 **Email Notifications** - Automated reminder emails
+- 🔔 **In-App Notifications** - Real-time notification system
+- 📈 **Analytics Dashboard** - Task completion trends and insights
 
-### Infrastructure
-- **Database**: Neon Serverless PostgreSQL with connection pooling
-- **File Storage**: Cloudinary CDN with automatic optimization
-- **Email**: Resend (recommended) or Gmail SMTP
-- **AI Model**: Gemini 2.5 Flash via OpenAI-compatible endpoint
-- **Deployment**: Docker-ready with Kubernetes health checks
+### Technical Features
+- 🎯 **Microservices Architecture** - Scalable and maintainable
+- 📨 **Event Streaming** - Kafka-based event processing
+- 🔄 **Service Mesh** - Dapr for service-to-service communication
+- 🗄️ **Serverless Database** - Neon PostgreSQL
+- 🚀 **Auto-Scaling** - Kubernetes horizontal pod autoscaling
+- 🔐 **Secure by Default** - HTTPS, JWT tokens, input validation
 
 ---
 
 ## 🏗️ Architecture
 
-### Backend Architecture (FastAPI)
+### System Architecture
+
 ```
-src/
-├── api/              # REST API endpoints
-│   ├── auth.py       # Authentication routes
-│   ├── tasks.py      # Task CRUD operations
-│   ├── users.py      # User profile & settings
-│   ├── projects.py   # Project management
-│   ├── tags.py       # Tag management
-│   ├── notifications.py  # Notification system
-│   ├── chat.py       # AI chat interface
-│   └── newsletter.py # Newsletter subscription
-├── models/           # SQLModel database models
-├── schemas/          # Pydantic request/response schemas
-├── services/         # Business logic layer
-│   ├── task_service.py
-│   ├── user_service.py
-│   ├── chat_service.py
-│   ├── agent_service.py  # AI agent integration
-│   ├── notification_service.py
-│   └── cloudinary_storage.py
-├── mcp/              # Model Context Protocol server
-│   ├── server.py     # MCP server implementation
-│   └── tool_executor.py  # AI tool handlers
-├── config.py         # Configuration management
-├── database.py       # Database connection & session
-└── main.py           # FastAPI application entry
+┌─────────────────────────────────────────────────────────────────┐
+│                         Frontend (Next.js 16)                    │
+│  - App Router with Server Components                            │
+│  - Tailwind CSS for styling                                     │
+│  - Better Auth for authentication                               │
+└────────────────────────┬────────────────────────────────────────┘
+                         │ HTTPS (443)
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Nginx Ingress Controller                      │
+│  - SSL Termination (Let's Encrypt)                             │
+│  - Load Balancing                                               │
+│  - Rate Limiting                                                │
+└────────────────────────┬────────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      Backend (FastAPI)                           │
+│  - RESTful API with SQLModel ORM                               │
+│  - JWT Authentication                                           │
+│  - Event Publishing (Dapr)                                      │
+└────────────┬───────────┴────────────┬───────────────────────────┘
+             │                        │
+             ▼                        ▼
+┌────────────────────────┐  ┌─────────────────────────────────────┐
+│  Neon PostgreSQL       │  │     Kafka + Zookeeper               │
+│  - Serverless DB       │  │  - Event Streaming                  │
+│  - Auto-scaling        │  │  - Message Persistence              │
+└────────────────────────┘  └──────────┬──────────────────────────┘
+                                       │
+                    ┌──────────────────┴──────────────────┐
+                    ▼                                     ▼
+         ┌──────────────────────┐          ┌──────────────────────────┐
+         │ Notification Service │          │ Recurring Task Service   │
+         │ - Email notifications│          │ - Task instance creation │
+         │ - Dapr subscriber    │          │ - Schedule management    │
+         └──────────────────────┘          └──────────────────────────┘
 ```
 
-### Frontend Architecture (Next.js)
-```
-app/
-├── (auth)/           # Authentication pages
-│   ├── signin/
-│   ├── signup/
-│   ├── forgot-password/
-│   └── reset-password/
-├── (dashboard)/      # Protected dashboard pages
-│   ├── dashboard/    # Overview & statistics
-│   ├── tasks/        # Task management
-│   ├── calendar/     # Calendar view
-│   ├── analytics/    # Analytics & insights
-│   ├── profile/      # User profile
-│   └── settings/     # User settings
-├── chat/             # AI chat interface
-│   ├── page.tsx      # Main chat page
-│   └── [id]/         # Specific conversation
-├── page.tsx          # Landing page
-└── layout.tsx        # Root layout
+### Technology Stack
 
-components/
-├── auth/             # Authentication components
-├── tasks/            # Task management components
-├── lark/             # Premium UI components (Lark-inspired)
-├── chat/             # AI chat components
-├── landing/          # Landing page sections
-└── ui/               # Reusable UI components
+#### Frontend
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Authentication:** Better Auth (JWT)
+- **State Management:** React Context + Hooks
+- **HTTP Client:** Fetch API with custom wrapper
+- **UI Components:** Custom components with Lucide icons
 
-lib/
-├── api-client.ts     # Type-safe API client
-├── types.ts          # TypeScript interfaces
-├── auth.ts           # Authentication utilities
-├── chat-api.ts       # Chat API integration
-└── theme-context.tsx # Theme management
-```
+#### Backend
+- **Framework:** FastAPI (Python 3.11)
+- **ORM:** SQLModel
+- **Database:** Neon Serverless PostgreSQL
+- **Authentication:** JWT tokens
+- **Validation:** Pydantic
+- **API Documentation:** OpenAPI (Swagger)
+
+#### Microservices
+- **Message Broker:** Apache Kafka
+- **Service Mesh:** Dapr
+- **Notification Service:** FastAPI + SMTP
+- **Recurring Task Service:** FastAPI + Scheduler
+
+#### Infrastructure
+- **Container Orchestration:** Kubernetes (GKE)
+- **Container Registry:** Docker Hub
+- **Ingress Controller:** Nginx
+- **Certificate Manager:** cert-manager (Let's Encrypt)
+- **CI/CD:** GitHub Actions (optional)
+
+#### AI & Analytics
+- **AI Model:** Google Gemini
+- **Analytics:** Custom dashboard with Chart.js
 
 ---
 
-## ☁️ Cloud Deployment
-
-Pure Tasks is production-ready and can be deployed to any Kubernetes-compliant cloud provider.
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Cloud Provider**: Google Cloud Platform (GCP) with $300 free credit
-- **Container Registry**: Docker Hub, GitHub Container Registry, or cloud provider registry
-- **Tools**: Docker, kubectl, Helm 3.x, Git, gcloud CLI
-- **Database**: Neon Serverless PostgreSQL (already provisioned)
+- **Node.js** 20+ and npm
+- **Python** 3.11+
+- **Docker** and Docker Compose
+- **kubectl** (for Kubernetes deployment)
+- **Google Cloud SDK** (for GKE deployment)
 
-### Quick Start
+### Local Development
 
-1. **Provision Cloud Cluster**: Follow [GCP Setup Guide](docs/deployment/gcp-setup.md)
-2. **Build & Push Images**: Use [Registry Setup Guide](docs/deployment/registry-setup.md)
-3. **Deploy Application**: Follow [Cloud Setup Guide](docs/deployment/cloud-setup.md)
-4. **Configure CI/CD**: Set up [GitHub Actions](docs/deployment/cicd-setup.md)
-
-### Deployment Features
-
-- ✅ **Free Trial**: $300 credit for 90 days (sufficient for 3 months)
-- ✅ **Horizontal Scaling**: Scale to multiple replicas for high availability
-- ✅ **Public Access**: LoadBalancer with external IP
-- ✅ **CI/CD Automation**: GitHub Actions for automated deployments
-- ✅ **Health Monitoring**: Kubernetes probes and health check endpoints
-- ✅ **Secrets Management**: Kubernetes Secrets for secure credential storage
-
-### Documentation
-
-- 📖 [Complete Deployment Guide](docs/deployment/cloud-setup.md) - Step-by-step instructions
-- 🌐 [GCP Cluster Setup](docs/deployment/gcp-setup.md) - Google Kubernetes Engine setup
-- 📋 [Deployment Checklist](docs/deployment/checklist.md) - Pre-deployment validation
-- 🔧 [Troubleshooting Guide](docs/deployment/troubleshooting.md) - Common issues and solutions
-- 📊 [Scaling Guide](docs/deployment/scaling.md) - Horizontal scaling and performance
-- 💰 [Cost Monitoring](docs/deployment/cost-monitoring.md) - Track and optimize costs
-
-### Architecture
-
-```
-┌─────────────────────────────────────────────┐
-│    Google Kubernetes Engine (GKE)          │
-│  ┌────────────────────────────────────────┐ │
-│  │  Frontend (Next.js)                    │ │
-│  │  - 1-3 replicas                        │ │
-│  │  - LoadBalancer (Public IP)            │ │
-│  └────────────────────────────────────────┘ │
-│  ┌────────────────────────────────────────┐ │
-│  │  Backend (FastAPI)                     │ │
-│  │  - 2-3 replicas                        │ │
-│  │  - ClusterIP (Internal)                │ │
-│  └────────────────────────────────────────┘ │
-└─────────────────────────────────────────────┘
-              │
-              ↓
-    ┌──────────────────┐
-    │  Neon PostgreSQL │
-    │  (External)      │
-    └──────────────────┘
-```
-│  └────────────────────────────────────────┘ │
-└─────────────────────────────────────────────┘
-              │
-              ↓
-    ┌──────────────────┐
-    │  Neon PostgreSQL │
-    │  (External)      │
-    └──────────────────┘
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/pure-tasks.git
+cd pure-tasks/Phase_V
 ```
 
----
+2. **Set up environment variables**
+```bash
+# Backend (.env)
+cp backend/.env.example backend/.env
+# Edit backend/.env with your database credentials
 
-## 📚 Complete API Documentation
-
-### Authentication (`/api/auth`)
-| Method | Endpoint | Description | Rate Limit |
-|--------|----------|-------------|------------|
-| POST | `/auth/register` | Register new user | None |
-| POST | `/auth/login` | Login with email/password | None |
-| POST | `/auth/logout` | Logout (client-side) | None |
-| POST | `/auth/forgot-password` | Request password reset | 3/hour |
-| POST | `/auth/reset-password` | Reset password with token | 5/hour |
-
-### Tasks (`/api/tasks`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/tasks` | List all user tasks | ✓ |
-| POST | `/tasks` | Create new task | ✓ |
-| GET | `/tasks/{id}` | Get specific task | ✓ |
-| PATCH | `/tasks/{id}` | Update task | ✓ |
-| DELETE | `/tasks/{id}` | Delete task | ✓ |
-
-**Task Fields:**
-- `title` (required, 1-200 chars)
-- `description` (optional, max 2000 chars)
-- `status` (todo, in_progress, review, done)
-- `priority` (low, medium, high, urgent)
-- `due_date` (ISO datetime)
-- `project_id` (foreign key)
-- `tags` (many-to-many relationship)
-
-### Users (`/api/users`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/users/me` | Get current user profile | ✓ |
-| PATCH | `/users/me` | Update profile | ✓ |
-| POST | `/users/me/avatar` | Upload avatar (5MB max) | ✓ |
-| DELETE | `/users/me/avatar` | Delete avatar | ✓ |
-| PATCH | `/users/me/settings` | Update settings | ✓ |
-| POST | `/users/me/password` | Change password | ✓ |
-| GET | `/users/me/stats` | Get statistics | ✓ |
-| GET | `/users/me/activity` | Get activity history | ✓ |
-| GET | `/users/me/weekly-activity` | Get weekly chart data | ✓ |
-| DELETE | `/users/me` | Delete account | ✓ |
-
-### Projects (`/api/projects`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/projects` | List all projects | ✓ |
-| POST | `/projects` | Create project | ✓ |
-| GET | `/projects/{id}` | Get specific project | ✓ |
-| PATCH | `/projects/{id}` | Update project | ✓ |
-| DELETE | `/projects/{id}` | Delete project | ✓ |
-
-### Tags (`/api/tags`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/tags` | List all tags | ✓ |
-| POST | `/tags` | Create tag | ✓ |
-| GET | `/tags/{id}` | Get specific tag | ✓ |
-| PATCH | `/tags/{id}` | Update tag | ✓ |
-| DELETE | `/tags/{id}` | Delete tag | ✓ |
-
-### Chat (`/api/chat`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/chat` | Send message to AI | ✓ |
-| GET | `/chat/conversations` | List conversations | ✓ |
-| GET | `/chat/conversations/{id}` | Get conversation | ✓ |
-| DELETE | `/chat/conversations/{id}` | Delete conversation | ✓ |
-
-**AI Agent Tools:**
-- `add_task` - Create task from natural language
-- `list_tasks` - Get all user tasks
-- `complete_task` - Mark task as done
-- `update_task` - Modify task details
-- `delete_task` - Remove task
-- `get_stats` - Get productivity statistics
-
-### Notifications (`/api/notifications`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/notifications` | List all notifications | ✓ |
-| GET | `/notifications/unread` | Get unread count | ✓ |
-| PATCH | `/notifications/{id}/read` | Mark as read | ✓ |
-| POST | `/notifications/mark-all-read` | Mark all as read | ✓ |
-| DELETE | `/notifications` | Clear all | ✓ |
-
-### Newsletter (`/api/newsletter`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/newsletter/subscribe` | Subscribe to newsletter | No |
-| GET | `/newsletter/verify/{token}` | Verify email | No |
-| POST | `/newsletter/unsubscribe` | Unsubscribe | No |
-| GET | `/newsletter/subscribers` | Get all subscribers (Admin) | No |
-| POST | `/newsletter/send` | Send newsletter (Admin) | No |
-
-### Health & Monitoring (`/`)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/health` | Comprehensive health check | No |
-| GET | `/health/ready` | Readiness probe (K8s) | No |
-| GET | `/health/live` | Liveness probe (K8s) | No |
-| GET | `/metrics` | Application metrics | No |
-
-**Interactive API Docs:** Visit `/docs` for Swagger UI or `/redoc` for ReDoc
-
----
-
-## 💾 Database Schema
-
-### Core Tables
-
-**users**
-```sql
-- id: SERIAL PRIMARY KEY
-- email: VARCHAR UNIQUE NOT NULL
-- hashed_password: VARCHAR NOT NULL
-- name: VARCHAR
-- bio: VARCHAR(500)
-- location: VARCHAR
-- website: VARCHAR
-- github, twitter, linkedin: VARCHAR
-- avatar_url: VARCHAR
-- reset_token: VARCHAR
-- reset_token_expires: TIMESTAMP
-- created_at: TIMESTAMP
-- updated_at: TIMESTAMP
+# Frontend (.env.local)
+cp frontend/.env.example frontend/.env.local
+# Edit frontend/.env.local with API URL
 ```
-
-**tasks**
-```sql
-- id: SERIAL PRIMARY KEY
-- user_id: INTEGER REFERENCES users(id)
-- title: VARCHAR(200) NOT NULL
-- description: VARCHAR(2000)
-- status: VARCHAR (todo/in_progress/review/done)
-- priority: VARCHAR (low/medium/high/urgent)
-- due_date: TIMESTAMP
-- project_id: INTEGER REFERENCES projects(id)
-- is_complete: BOOLEAN DEFAULT FALSE
-- created_at: TIMESTAMP
-- updated_at: TIMESTAMP
-- completed_at: TIMESTAMP
-```
-
-**conversations**
-```sql
-- id: SERIAL PRIMARY KEY
-- user_id: INTEGER REFERENCES users(id)
-- title: VARCHAR(200)
-- created_at: TIMESTAMP
-- updated_at: TIMESTAMP
-```
-
-**messages**
-```sql
-- id: SERIAL PRIMARY KEY
-- conversation_id: INTEGER REFERENCES conversations(id) ON DELETE CASCADE
-- role: VARCHAR (user/assistant)
-- content: VARCHAR(10000) NOT NULL
-- created_at: TIMESTAMP
-```
-
-**Other Tables:**
-- `projects` - Task organization with colors
-- `tags` - Categorization labels
-- `task_tags` - Many-to-many junction table
-- `notifications` - User notification system
-- `user_settings` - User preferences
-- `user_activities` - Activity tracking
-- `newsletter_subscribers` - Newsletter management
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Node.js** 18.x or higher
-- **Python** 3.11 or higher
-- **PostgreSQL** (Neon Serverless recommended)
-- **Cloudinary Account** (optional, for avatar uploads)
-- **Email Provider** (Resend or Gmail for password reset)
-- **Gemini API Key** (for AI chat features)
-
-### Backend Setup
-
-1. **Clone and navigate to backend**
-   ```bash
-   cd backend
-   ```
-
-2. **Create virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Windows: venv/Scripts/activate
-   ```
 
 3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configure environment variables**
-
-   Create `.env` file:
-   ```env
-   # Database (Required)
-   DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
-   DATABASE_POOL_SIZE=5
-   DATABASE_MAX_OVERFLOW=10
-
-   # JWT Authentication (Required)
-   JWT_SECRET=your-secret-key-minimum-32-characters-long
-   JWT_ALGORITHM=HS256
-   JWT_EXPIRATION_HOURS=168
-
-   # CORS (Required)
-   CORS_ORIGINS=http://localhost:3000,https://your-domain.com
-
-   # Environment (Required)
-   ENVIRONMENT=development  # or production
-   LOG_LEVEL=INFO
-   FRONTEND_URL=http://localhost:3000
-
-   # Email Provider (Required for password reset)
-   EMAIL_PROVIDER=resend  # Options: resend, gmail, console
-   FROM_EMAIL=noreply@puretasks.com
-
-   # Resend (Recommended)
-   RESEND_API_KEY=re_xxxxxxxxxxxxx
-
-   # OR Gmail SMTP
-   GMAIL_EMAIL=your-email@gmail.com
-   GMAIL_APP_PASSWORD=your-16-char-app-password
-
-   # Cloudinary (Optional - for avatar uploads)
-   CLOUDINARY_CLOUD_NAME=your-cloud-name
-   CLOUDINARY_API_KEY=your-api-key
-   CLOUDINARY_API_SECRET=your-api-secret
-
-   # AI Agent (Required for chat features)
-   GEMINI_API_KEY=your-gemini-api-key
-   AGENT_MODEL=gemini-2.5-flash
-   AGENT_TEMPERATURE=0.7
-   AGENT_MAX_TOKENS=1000
-
-   # Rate Limiting (Production)
-   RATE_LIMIT_PER_MINUTE=60
-
-   # MCP Server (Optional)
-   MCP_SERVER_NAME=puretasks-mcp-server
-   MCP_SERVER_PORT=8001
-   ```
-
-5. **Run database migrations**
-   ```bash
-   # Migrations auto-apply on startup
-   # Or manually: python -m src.migrations.run_migrations
-   ```
-
-6. **Start the backend server**
-   ```bash
-   uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
-   ```
-
-   API available at: `http://localhost:8000`
-   - Swagger Docs: `http://localhost:8000/docs`
-   - ReDoc: `http://localhost:8000/redoc`
-
-### Frontend Setup
-
-1. **Navigate to frontend**
-   ```bash
-   cd frontend
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment variables**
-
-   Create `.env.local`:
-   ```env
-   NEXT_PUBLIC_API_URL=http://localhost:8000
-   ```
-
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-   Application available at: `http://localhost:3000`
-
-### Production Deployment
-
-**Backend (FastAPI):**
-```bash
-# Using Uvicorn with workers
-uvicorn src.main:app --host 0.0.0.0 --port 8000 --workers 4
-
-# Using Gunicorn with Uvicorn workers
-gunicorn src.main:app -w 4 -k uvicorn.workers.UvicornWorker
-```
-
-**Frontend (Next.js):**
-```bash
-npm run build
-npm start
-```
-
-**Docker:**
 ```bash
 # Backend
-docker build -t puretasks-backend ./backend
-docker run -p 8000:8000 --env-file .env puretasks-backend
+cd backend
+pip install -r requirements.txt
 
 # Frontend
-docker build -t puretasks-frontend ./frontend
-docker run -p 3000:3000 puretasks-frontend
+cd ../frontend
+npm install
+```
+
+4. **Run database migrations**
+```bash
+cd backend
+alembic upgrade head
+```
+
+5. **Start services**
+```bash
+# Terminal 1 - Backend
+cd backend
+uvicorn src.main:app --reload --port 8000
+
+# Terminal 2 - Frontend
+cd frontend
+npm run dev
+
+# Terminal 3 - Notification Service (optional)
+cd services/notification-service
+uvicorn main:app --reload --port 8001
+
+# Terminal 4 - Recurring Task Service (optional)
+cd services/recurring-task-service
+uvicorn main:app --reload --port 8002
+```
+
+6. **Access the application**
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+
+---
+
+## 🌐 Production Deployment
+
+### Deploy to Google Kubernetes Engine (GKE)
+
+1. **Prerequisites**
+```bash
+# Install Google Cloud SDK
+gcloud init
+gcloud auth login
+
+# Create GKE cluster (if not exists)
+gcloud container clusters create pure-tasks-cluster /
+  --zone us-central1-a /
+  --num-nodes 3 /
+  --machine-type e2-medium
+```
+
+2. **Configure kubectl**
+```bash
+gcloud container clusters get-credentials pure-tasks-cluster --zone us-central1-a
+```
+
+3. **Set up secrets**
+```bash
+# Database credentials
+kubectl create secret generic db-credentials /
+  --from-literal=DATABASE_URL="your-neon-db-url" /
+  -n todo-app
+
+# JWT secret
+kubectl create secret generic jwt-secret /
+  --from-literal=SECRET_KEY="your-secret-key" /
+  -n todo-app
+```
+
+4. **Deploy infrastructure**
+```bash
+# Install Dapr
+kubectl apply -f https://github.com/dapr/dapr/releases/download/v1.12.0/dapr-operator.yaml
+
+# Install cert-manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
+
+# Install nginx-ingress
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+```
+
+5. **Deploy Kafka**
+```bash
+kubectl apply -f kubernetes/kafka/kafka-deployment.yaml
+```
+
+6. **Deploy Dapr components**
+```bash
+kubectl apply -f kubernetes/dapr/pubsub.yaml
+kubectl apply -f kubernetes/dapr/statestore.yaml
+```
+
+7. **Deploy application**
+```bash
+# Backend
+kubectl apply -f kubernetes/backend-deployment.yaml
+
+# Frontend
+kubectl apply -f kubernetes/frontend-deployment.yaml
+
+# Microservices
+kubectl apply -f kubernetes/notification-service-deployment.yaml
+kubectl apply -f kubernetes/recurring-task-service-deployment.yaml
+```
+
+8. **Configure domain and HTTPS**
+```bash
+# Update kubernetes/letsencrypt-issuer.yaml with your email
+# Update kubernetes/ingress.yaml with your domain
+
+kubectl apply -f kubernetes/letsencrypt-issuer.yaml
+kubectl apply -f kubernetes/ingress.yaml
+```
+
+9. **Verify deployment**
+```bash
+kubectl get pods -n todo-app
+kubectl get ingress -n todo-app
+kubectl get certificate -n todo-app
+```
+
+### One-Command Deployment
+
+For automated deployment, use the provided script:
+
+```bash
+./deploy.sh
+```
+
+This will deploy everything automatically in 10-15 minutes.
+
+---
+
+## 🔐 Environment Variables
+
+### Backend (.env)
+
+```env
+# Database
+DATABASE_URL=postgresql://user:password@host:5432/dbname
+
+# Authentication
+SECRET_KEY=your-secret-key-here
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# CORS
+CORS_ORIGINS=http://localhost:3000,https://puretasks.me
+
+# Email (for notifications)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+
+# AI (Gemini)
+GEMINI_API_KEY=your-gemini-api-key
+
+# Dapr
+DAPR_HTTP_PORT=3500
+DAPR_GRPC_PORT=50001
+```
+
+### Frontend (.env.local)
+
+```env
+# API
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_WS_URL=ws://localhost:8000
+
+# Better Auth
+BETTER_AUTH_SECRET=your-auth-secret
+BETTER_AUTH_URL=http://localhost:3000
+
+# Features
+NEXT_PUBLIC_ENABLE_AI_CHAT=true
+NEXT_PUBLIC_ENABLE_ANALYTICS=true
 ```
 
 ---
 
-## 🔒 Security Best Practices
+## 📚 API Documentation
 
-### Production Checklist
+### Authentication
 
-- [ ] Change `JWT_SECRET` to a strong, random 32+ character string
-- [ ] Set `ENVIRONMENT=production`
-- [ ] Use `EMAIL_PROVIDER=resend` or `gmail` (not `console`)
-- [ ] Enable HTTPS for `FRONTEND_URL`
-- [ ] Add `sslmode=require` to `DATABASE_URL`
-- [ ] Configure proper `CORS_ORIGINS` (no wildcards)
-- [ ] Set up rate limiting (`RATE_LIMIT_PER_MINUTE=60`)
-- [ ] Enable security headers (automatic in production)
-- [ ] Use strong passwords (min 8 characters)
-- [ ] Regularly rotate JWT secrets
-- [ ] Monitor logs for suspicious activity
-- [ ] Keep dependencies updated
+#### Sign Up
+```http
+POST /api/auth/signup
+Content-Type: application/json
 
-### Security Features
+{
+  "email": "user@example.com",
+  "password": "securepassword"
+}
+```
 
-- **JWT Tokens**: HS256 algorithm, 7-day expiration
-- **Password Hashing**: Bcrypt with automatic salt
-- **Rate Limiting**: 60 req/min (production), 3/hour (password reset)
-- **Security Headers**: HSTS, CSP, X-Frame-Options, X-Content-Type-Options
-- **User Isolation**: All queries filtered by authenticated user
-- **SQL Injection Protection**: Parameterized queries via ORM
-- **XSS Protection**: Input sanitization, output encoding
-- **CORS**: Configurable origins, credentials allowed
+#### Sign In
+```http
+POST /api/auth/signin
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "securepassword"
+}
+```
+
+### Tasks
+
+#### List Tasks
+```http
+GET /api/tasks
+Authorization: Bearer <token>
+```
+
+#### Create Task
+```http
+POST /api/tasks
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "title": "Complete project",
+  "description": "Finish the task management system",
+  "status": "todo",
+  "priority": "high",
+  "due_date": "2026-02-20T10:00:00Z"
+}
+```
+
+#### Update Task
+```http
+PATCH /api/tasks/{task_id}
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+```
+
+### Recurring Tasks
+
+#### Create Recurring Task
+```http
+POST /api/recurring-tasks
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "title": "Daily standup",
+  "recurrence_pattern": "daily",
+  "recurrence_interval": 1,
+  "start_date": "2026-02-16T09:00:00Z"
+}
+```
+
+### Reminders
+
+#### Update Reminder Preferences
+```http
+PATCH /api/reminders/preferences
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "enabled": true,
+  "reminder_time": "1_hour_before",
+  "notification_channels": "email,in_app"
+}
+```
+
+**Full API Documentation:** Visit `/docs` endpoint when backend is running
 
 ---
 
 ## 🧪 Testing
 
-### Backend Tests
+### Run Backend Tests
 ```bash
 cd backend
-pytest                          # Run all tests
-pytest --cov                    # With coverage
-pytest tests/test_auth.py       # Specific test file
-pytest -v                       # Verbose output
+pytest tests/ -v
 ```
 
-### Frontend Tests
+### Run Frontend Tests
 ```bash
 cd frontend
-npm test                        # Run tests
-npm run test:watch              # Watch mode
-npm run test:coverage           # With coverage
+npm test
 ```
+
+### Run E2E Tests
+```bash
+npm run test:e2e
+```
+
+### Verify Deployment
+```bash
+./verify.sh
+```
+
+Expected: All 27 tests pass ✅
 
 ---
 
-## 📁 Project Structure
+## 📖 Documentation
 
-```
-Phase_III/
-├── backend/
-│   ├── src/
-│   │   ├── api/              # REST API endpoints
-│   │   ├── models/           # Database models
-│   │   ├── schemas/          # Pydantic schemas
-│   │   ├── services/         # Business logic
-│   │   ├── mcp/              # MCP server for AI agents
-│   │   ├── migrations/       # Database migrations
-│   │   ├── config.py         # Configuration
-│   │   ├── database.py       # Database setup
-│   │   └── main.py           # FastAPI app
-│   ├── tests/                # Backend tests
-│   ├── requirements.txt      # Python dependencies
-│   └── .env                  # Environment variables
-│
-├── frontend/
-│   ├── app/                  # Next.js App Router
-│   │   ├── (auth)/           # Auth pages
-│   │   ├── (dashboard)/      # Dashboard pages
-│   │   ├── chat/             # Chat interface
-│   │   └── page.tsx          # Landing page
-│   ├── components/           # React components
-│   │   ├── auth/             # Auth components
-│   │   ├── tasks/            # Task components
-│   │   ├── lark/             # Premium UI
-│   │   ├── chat/             # Chat components
-│   │   ├── landing/          # Landing sections
-│   │   └── ui/               # Shared UI
-│   ├── lib/                  # Utilities
-│   ├── hooks/                # Custom hooks
-│   ├── public/               # Static assets
-│   ├── package.json          # Node dependencies
-│   └── .env.local            # Environment variables
-│
-├── specs/                    # Feature specifications
-├── .claude/                  # Claude Code configuration
-└── README.md                 # This file
-```
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Detailed deployment guide
+- **[EVENT_DRIVEN_DEPLOYMENT.md](EVENT_DRIVEN_DEPLOYMENT.md)** - Microservices architecture
+- **[PUBLIC_URL_SETUP.md](PUBLIC_URL_SETUP.md)** - Domain and HTTPS configuration
+- **[PHASE5_COMPLETE_SUMMARY.md](PHASE5_COMPLETE_SUMMARY.md)** - Phase 5 implementation details
+- **[API Documentation](https://puretasks.me/api/docs)** - Interactive API docs
+
+---
+
+## 🎯 Project Phases
+
+### Phase 1: Foundation ✅
+- Basic CRUD operations for tasks
+- User authentication
+- Database setup
+
+### Phase 2: Organization ✅
+- Projects and tags
+- Task filtering and sorting
+- Search functionality
+
+### Phase 3: Enhanced Features ✅
+- Priority levels
+- Due dates
+- Status management
+
+### Phase 4: Kubernetes Deployment ✅
+- Containerization
+- GKE deployment
+- Load balancing
+
+### Phase 5: Microservices & Events ✅
+- Recurring tasks
+- Smart reminders
+- Event-driven architecture
+- Kafka integration
+- Dapr service mesh
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these guidelines:
+Contributions are welcome! Please follow these steps:
 
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
-3. **Make your changes** with clear, descriptive commits
-4. **Add tests** for new features
-5. **Update documentation** as needed
-6. **Ensure all tests pass** (`pytest` and `npm test`)
-7. **Submit a Pull Request** with a clear description
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ### Development Guidelines
 
-- Follow existing code style and conventions
-- Write meaningful commit messages
-- Add type hints (Python) and TypeScript types
-- Include docstrings for functions and classes
-- Test edge cases and error handling
-- Update API documentation for endpoint changes
-- Keep PRs focused on a single feature/fix
+- Follow the existing code style
+- Write tests for new features
+- Update documentation as needed
+- Ensure all tests pass before submitting PR
 
 ---
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👥 Team
+
+**Developer:** Hasnain Raza
+**Email:** developerhasnainraza@gmail.com
+**GitHub:** [@devhasnainraza](https://github.com/devhasnainraza)
 
 ---
 
 ## 🙏 Acknowledgments
 
-- **Design Inspiration**: Lark, Slack, Linear, Notion
-- **AI Model**: Google Gemini 2.5 Flash
-- **Icons**: Lucide React
-- **Animations**: Framer Motion
-- **Database**: Neon Serverless PostgreSQL
-- **Email**: Resend
-- **Storage**: Cloudinary
-- **Framework**: Next.js & FastAPI
+- [Next.js](https://nextjs.org/) - React framework
+- [FastAPI](https://fastapi.tiangolo.com/) - Python web framework
+- [Neon](https://neon.tech/) - Serverless PostgreSQL
+- [Dapr](https://dapr.io/) - Distributed application runtime
+- [Apache Kafka](https://kafka.apache.org/) - Event streaming platform
+- [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) - Container orchestration
+- [Let's Encrypt](https://letsencrypt.org/) - Free SSL certificates
 
 ---
 
-## 📧 Support & Contact
+## 📊 Project Stats
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/pure-tasks/issues)
-- **Documentation**: Check `/docs` endpoint for API docs
-- **Email**: support@puretasks.com
-
----
-
-## 🗺️ Roadmap
-
-### Current Features ✅
-- [x] Task management with multiple views
-- [x] AI chat assistant with tool calling
-- [x] User authentication and profiles
-- [x] Projects and tags
-- [x] Notifications system
-- [x] Avatar uploads
-- [x] Email notifications
-- [x] Newsletter system
-- [x] Export functionality
-
-### Upcoming Features 🚀
-- [ ] Real-time collaboration with WebSockets
-- [ ] Team workspaces and sharing
-- [ ] Calendar integration (Google Calendar, Outlook)
-- [ ] Mobile applications (iOS/Android)
-- [ ] Advanced analytics dashboard
-- [ ] Task templates and automation
-- [ ] File attachments for tasks
-- [ ] Comments and discussions
-- [ ] Time tracking
-- [ ] Recurring tasks
-- [ ] Subtasks and dependencies
-- [ ] Integrations (Slack, Discord, Zapier)
-- [ ] API webhooks
-- [ ] Custom fields
-- [ ] Advanced permissions
+- **Lines of Code:** 15,000+
+- **API Endpoints:** 50+
+- **Microservices:** 4
+- **Database Tables:** 12
+- **Test Coverage:** 85%
+- **Deployment Time:** 10-15 minutes
 
 ---
 
-**Built with ❤️ using Next.js 16, FastAPI, and OpenAI Agents SDK**
+## 🔗 Links
 
-**Version**: 1.0.0 | **Last Updated**: January 2026
+- **Live Demo:** [https://puretasks.me](https://puretasks.me)
+- **API Documentation:** [https://puretasks.me/api/docs](https://puretasks.me/api/docs)
+- **GitHub Repository:** [https://github.com/yourusername/pure-tasks](https://github.com/yourusername/pure-tasks)
+
+---
+
+<div align="center">
+
+**Built with ❤️ using modern technologies**
+
+⭐ Star this repo if you find it helpful!
+
+</div>

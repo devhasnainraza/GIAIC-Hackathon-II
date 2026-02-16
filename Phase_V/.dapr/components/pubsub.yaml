@@ -1,0 +1,22 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  # Local Kafka broker
+  - name: brokers
+    value: "localhost:9092"
+  - name: consumerGroup
+    value: "todo-app-local"
+  - name: clientId
+    value: "todo-app-local"
+  - name: authType
+    value: "none"
+  # Consumer configuration
+  - name: consumeRetryInterval
+    value: "200ms"
+  - name: version
+    value: "2.8.0"

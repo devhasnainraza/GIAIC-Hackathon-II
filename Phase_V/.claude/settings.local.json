@@ -106,7 +106,18 @@
       "Bash(kubectl scale deployment frontend -n todo-app --replicas=0)",
       "Bash(kubectl scale:*)",
       "Bash(kubectl apply:*)",
-      "Bash(kubectl delete:*)"
+      "Bash(kubectl delete:*)",
+      "Bash(chmod:*)",
+      "Bash(kubectl create job db-migration --image=devhasnainraza/backend:phase5 -n todo-app -- alembic upgrade head)",
+      "Bash(Start-Sleep -Seconds 60)",
+      "Bash(gcloud container clusters describe:*)",
+      "Bash(gcloud container node-pools create:*)",
+      "Bash(kubectl cordon:*)",
+      "Bash(kubectl run curl-test --image=curlimages/curl:latest --rm -it --restart=Never -n todo-app -- curl -s http://34.118.239.173:8000/api/recurring-tasks)",
+      "Bash(gcloud container node-pools delete:*)",
+      "Bash(kubectl rollout status:*)",
+      "Bash(kubectl set image:*)",
+      "Bash(kubectl wait:*)"
     ]
   }
 }

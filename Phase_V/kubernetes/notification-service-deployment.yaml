@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+  namespace: todo-app
+  labels:
+    app: notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "notification-service"
+        dapr.io/app-port: "8001"
+        dapr.io/log-level: "info"
+    spec:
+      containers:
+      - name: notification-service
+        image: devhasnainraza/notification-service:v1.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8001
+        env:
+        - name: DAPR_HTTP_PORT
+          value: "3500"
+        - name: BACKEND_APP_ID
+          value: "backend"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "150m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service
+  namespace: todo-app
+spec:
+  selector:
+    app: notification-service
+  ports:
+  - protocol: TCP
+    port: 8001
+    targetPort: 8001
+  type: ClusterIP

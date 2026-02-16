@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: todo-app-ingress
+  namespace: todo-app
+  annotations:
+    # Use nginx ingress controller
+    kubernetes.io/ingress.class: nginx
+
+    # Enable cert-manager to create SSL certificate
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+
+    # Redirect HTTP to HTTPS
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+    # Increase body size for file uploads
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+
+    # WebSocket support (if needed)
+    nginx.ingress.kubernetes.io/websocket-services: "frontend"
+spec:
+  tls:
+  - hosts:
+    - puretasks.me
+    - www.puretasks.me
+    secretName: todo-app-tls
+  rules:
+  - host: puretasks.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+  - host: www.puretasks.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
