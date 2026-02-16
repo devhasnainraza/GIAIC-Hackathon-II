@@ -238,9 +238,9 @@ echo -n "postgresql://user:pass@host/db?sslmode=require" | base64
 [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("your-value"))
 
 # Example values from Phase_III .env.example:
-# DATABASE_URL: postgresql://neondb_owner:npg_lW83steFXOxp@ep-tiny-shadow-ahq6dtsj-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
-# JWT_SECRET: q-_ohHZKZBbF4GkRwFZRxIpi89nyQU6DSF6B31wwpWE
-# GEMINI_API_KEY: AIzaSyAXI8L6fNo1jrwENBAWWuJpJiVKTt-M9j8
+# DATABASE_URL: DATABASE_URL
+# JWT_SECRET: JWT_SECRET
+# GEMINI_API_KEY: GEMINI_API_KEY
 ```
 
 **⚠️ Security Warning**: Never commit `secrets.yaml` to version control. It's already in `.gitignore`.
