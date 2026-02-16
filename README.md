@@ -490,7 +490,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-**Developer:** Hasnain Raza
+**Developer:** Muhammad Hasnain
 **Email:** developerhasnainraza@gmail.com
 **GitHub:** [@devhasnainraza](https://github.com/devhasnainraza)
 
@@ -520,14 +520,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Live Application:** [https://puretasks.me](https://puretasks.me)
 - **API Documentation:** [https://api.puretasks.me/docs](https://api.puretasks.me/docs)
-- **Hackathon Details:** [Panaversity Hackathon II](https://docs.google.com/document/d/1KHxeDNnqG9uew-rEabQc5H8u3VmEN3OaJ_A1ZVVr9vY/edit?pli=1&tab=t.0)
+- **Hackathon Details:** [GIAIC Hackathon II](https://docs.google.com/document/d/1KHxeDNnqG9uew-rEabQc5H8u3VmEN3OaJ_A1ZVVr9vY/edit?pli=1&tab=t.0)
 
 ## 📞 Support
 
 For questions or issues:
 - Open an issue on GitHub
 - Email: developerhasnainraza@gmail.com
-- Join the Panaversity Discord community
 
 ---
 
